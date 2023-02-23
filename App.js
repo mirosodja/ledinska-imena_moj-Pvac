@@ -18,8 +18,8 @@ export default function App() {
             headerStyle: {
               backgroundColor: Colors.primary500
             },
-            headerTintColor: Colors.grey700,
-            contentStyle: { backgroundColor: Colors.grey700 }
+            headerTintColor: Colors.gray700,
+            contentStyle: { backgroundColor: Colors.gray700 }
           }}>
           <Stack.Screen
             name="AllPlaces"
