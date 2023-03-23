@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 
 import { Colors } from '../../constants/colors.js';
 import { Place } from '../../models/place.js';
@@ -26,8 +26,13 @@ function PlaceForm({ onCreatePlace }) {
     }, []);
 
     function savePlaceHandler() {
-        const placeData = new Place(enteredTitle, selectedImage, pickedLocation);
-        onCreatePlace(placeData);
+        if (enteredTitle && selectedImage && pickedLocation) {
+            const placeData = new Place(enteredTitle, selectedImage, pickedLocation);
+            onCreatePlace(placeData);
+        }
+        else {
+            Alert.alert('Missing data', 'Please fill in all fields.', [{ text: 'OK' }]);
+        }
     }
     // TODO 
     // => pazi, tu ni error handlerja, če niso vsi podatki izpolnjeni 
