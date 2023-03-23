@@ -29,6 +29,11 @@ function PlaceForm({ onCreatePlace }) {
         const placeData = new Place(enteredTitle, selectedImage, pickedLocation);
         onCreatePlace(placeData);
     }
+    // TODO 
+    // => pazi, tu ni error handlerja, če niso vsi podatki izpolnjeni 
+    // => prav tako je problem, ker, če pustiš prazno, pa si prej že vnesel, vrne napako, ker je id isti
+    // TODO
+    // => read location on load
 
     return (
         <ScrollView style={styles.form}>
