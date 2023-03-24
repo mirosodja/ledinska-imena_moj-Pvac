@@ -9,7 +9,10 @@ function PlaceDetails({ route, navigation }) {
     const [fetchedPlace, setFetchedPlace] = useState();
 
     function showOnMapHandler() {
-
+        navigation.navigate('Map', {
+            initialLat: fetchedPlace.location.lat,
+            initialLng: fetchedPlace.location.lng,
+        });
     }
 
     const selectedPlaceId = route.params.placeId;
@@ -43,6 +46,9 @@ function PlaceDetails({ route, navigation }) {
                 </View>
                 <OutlinedButton icon="map" onPress={showOnMapHandler}>
                     View on Map
+                </OutlinedButton>
+                <OutlinedButton icon="map" onPress={showOnMapHandler}>
+                    Delete
                 </OutlinedButton>
             </View>
         </ScrollView>

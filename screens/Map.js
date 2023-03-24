@@ -4,17 +4,26 @@ import MapView, { Marker } from "react-native-maps";
 
 import IconButton from "../components/UI/IconButton";
 
-function Map({ navigation }) {
-    const [selectedLocation, setSelectedLocation] = useState();
+function Map({ navigation, route }) {
+    const initialLocation = route.params && {
+        lat: route.params.initialLat,
+        lng: route.params.initialLng
+    };
+
+    const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+
 
     const region = {
-        latitude: 46.50,
-        longitude: 14.10,
+        latitude: initialLocation ? initialLocation.lat : 46.50,
+        longitude: initialLocation ? initialLocation.lng : 14.10,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     };
 
     function selectLocationHandler(event) {
+        if (initialLocation) {
+            return;
+        }
         const lat = event.nativeEvent.coordinate.latitude;
         const lng = event.nativeEvent.coordinate.longitude;
 
@@ -37,6 +46,9 @@ function Map({ navigation }) {
     }, [navigation, selectedLocation]);
 
     useLayoutEffect(() => {
+        if (initialLocation) {
+            return;
+        }
         navigation.setOptions({
             headerRight: ({ tintColor }) => (
                 <IconButton
