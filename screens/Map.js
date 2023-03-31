@@ -14,8 +14,8 @@ function Map({ navigation, route }) {
 
 
     const region = {
-        latitude: initialLocation ? initialLocation.lat : 46.50,
-        longitude: initialLocation ? initialLocation.lng : 14.10,
+        latitude: initialLocation ? initialLocation.lat : 46.320651,
+        longitude: initialLocation ? initialLocation.lng : 13.911406,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     };

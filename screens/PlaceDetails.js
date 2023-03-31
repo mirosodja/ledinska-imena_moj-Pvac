@@ -47,7 +47,7 @@ function PlaceDetails({ route, navigation }) {
                 <OutlinedButton icon="map" onPress={showOnMapHandler}>
                     View on Map
                 </OutlinedButton>
-                <OutlinedButton icon="map" onPress={showOnMapHandler}>
+                <OutlinedButton icon="trash" onPress={showOnMapHandler}>
                     Delete
                 </OutlinedButton>
             </View>
