@@ -19,14 +19,19 @@
     ],
     "ios": {
       "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "in.potep.ledinskaimena"
     },
     "android": {
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "in.potep.ledinskaimena"
     },
     "web": {
       "favicon": "./assets/favicon.png"
