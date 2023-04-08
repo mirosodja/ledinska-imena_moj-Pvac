@@ -18,3 +18,5 @@ readme/
 mapbox/
 course*
 android/
+.idea/
+ios/
