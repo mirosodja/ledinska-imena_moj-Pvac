@@ -18,7 +18,6 @@ function PlaceForm({ onCreatePlace }) {
     }
 
     function takeImageHandler(imageUri) {
-        console.log(imageUri);
         setSelectedImage(imageUri);
     }
 
