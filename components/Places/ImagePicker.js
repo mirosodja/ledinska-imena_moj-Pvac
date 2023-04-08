@@ -36,11 +36,8 @@ function ImagePicker({ onTakeImage }) {
                 quality: 0.5,
             }
         );
-        // glej to spodaj: https://github.com/expo/expo/issues/20977
-        if (!image.canceled) {
-            setPickedImage(image.assets[0].uri);
-            onTakeImage(image.assets[0].uri);
-        }
+        setPickedImage(image.uri);
+        onTakeImage(image.uri);
     }
 
     let imagePreview = <Text>No image picked yet.</Text>;
