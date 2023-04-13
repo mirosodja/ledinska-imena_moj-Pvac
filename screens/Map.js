@@ -1,8 +1,13 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import MapLibreGL from '@maplibre/maplibre-react-native';
+import { MAP_BOX_TOKEN } from '../mapbox/key.js';
+
 
 import IconButton from "../components/UI/IconButton";
+
+MapLibreGL.setAccessToken(MAP_BOX_TOKEN);
 
 function Map({ navigation, route }) {
     const initialLocation = route.params && {
@@ -14,10 +19,11 @@ function Map({ navigation, route }) {
 
 
     const region = {
-        latitude: initialLocation ? initialLocation.lat : 46.320651,
-        longitude: initialLocation ? initialLocation.lng : 13.911406,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitude: initialLocation ? initialLocation.lat : 46.291133,
+        longitude: initialLocation ? initialLocation.lng : 13.893405,
+        latitudeDelta: 0.0888, // prej 0.0922 
+        longitudeDelta: 0.0405,
+
     };
 
     function selectLocationHandler(event) {
@@ -62,21 +68,29 @@ function Map({ navigation, route }) {
     }, [navigation, savedPickedLocationHandler]);
 
     return (
-        <MapView
-            style={styles.map}
-            initialRegion={region}
-            onPress={selectLocationHandler}
-        >
-            {selectedLocation && (
-                <Marker
-                    title="Picked Location"
-                    coordinate={{
-                        latitude: selectedLocation.lat,
-                        longitude: selectedLocation.lng
-                    }}
-                />
-            )}
-        </MapView>
+        <>
+            {/* <MapView
+                style={styles.map}
+                initialRegion={region}
+                onPress={selectLocationHandler}
+            >
+                {selectedLocation && (
+                    <Marker
+                        title="Picked Location"
+                        coordinate={{
+                            latitude: selectedLocation.lat,
+                            longitude: selectedLocation.lng
+                        }}
+                    />
+                )}
+            </MapView> */}
+
+            <MapLibreGL.MapView
+                style={styles.map}
+                logoEnabled={false}
+                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
+            />
+        </>
     );
 }
 
