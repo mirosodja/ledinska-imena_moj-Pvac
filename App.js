@@ -11,6 +11,7 @@ import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { init } from './util/database';
+import Marker from './components/UI/Marker';
 
 const Stack = createNativeStackNavigator();
 

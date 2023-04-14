@@ -1,15 +1,19 @@
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { Alert, StyleSheet, Text, Image } from "react-native";
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
 
 import IconButton from "../components/UI/IconButton";
+import Marker from "../components/UI/Marker";
 
+// set MapLibreGL to mapbox tile server
 MapLibreGL.setAccessToken(MAP_BOX_TOKEN);
 
+
+
 function Map({ navigation, route }) {
+
     const initialLocation = route.params && {
         lat: route.params.initialLat,
         lng: route.params.initialLng
@@ -21,20 +25,22 @@ function Map({ navigation, route }) {
     const region = {
         latitude: initialLocation ? initialLocation.lat : 46.291133,
         longitude: initialLocation ? initialLocation.lng : 13.893405,
-        latitudeDelta: 0.0888, // prej 0.0922 
-        longitudeDelta: 0.0405,
-
+        // latitudeDelta: 0.0888, // prej 0.0922 
+        // longitudeDelta: 0.0405,
+        zoomLevel: 10,
     };
 
     function selectLocationHandler(event) {
         if (initialLocation) {
             return;
         }
-        const lat = event.nativeEvent.coordinate.latitude;
-        const lng = event.nativeEvent.coordinate.longitude;
-
+        const lat = event.geometry.coordinates[1];
+        const lng = event.geometry.coordinates[0];
+        
         setSelectedLocation({ lat: lat, lng: lng });
     }
+
+
 
     const savedPickedLocationHandler = useCallback(() => {
         if (!selectedLocation) {
@@ -69,27 +75,25 @@ function Map({ navigation, route }) {
 
     return (
         <>
-            {/* <MapView
-                style={styles.map}
-                initialRegion={region}
-                onPress={selectLocationHandler}
-            >
-                {selectedLocation && (
-                    <Marker
-                        title="Picked Location"
-                        coordinate={{
-                            latitude: selectedLocation.lat,
-                            longitude: selectedLocation.lng
-                        }}
-                    />
-                )}
-            </MapView> */}
-
             <MapLibreGL.MapView
                 style={styles.map}
                 logoEnabled={false}
-                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
-            />
+                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"cle
+                onPress={selectLocationHandler}
+                initialLocation={region}
+            >
+                <MapLibreGL.Camera
+                    defaultSettings={{
+                        centerCoordinate: [region.longitude, region.latitude],
+                        zoomLevel: region.zoomLevel,
+                    }}
+                />
+                {selectedLocation && (
+                    <MapLibreGL.MarkerView coordinate={[selectedLocation.lng, selectedLocation.lat]} x={1} y={1}>
+                        <Marker />
+                    </MapLibreGL.MarkerView>
+                )}
+            </MapLibreGL.MapView>
         </>
     );
 }

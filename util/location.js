@@ -3,7 +3,6 @@ import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 export function getMapPreview(lat, lng) {
     // const imagePreviewUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+ff0000(${lng},${lat})/${lng},${lat},14,0/400x200?access_token=${MAP_BOX_TOKEN}`;
     const imagePreviewUrl= `https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4/static/${lng},${lat},11.45,0/400x200?access_token=${MAP_BOX_TOKEN}`
-    // https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4.html?title=view&access_token=pk.eyJ1IjoibWlyby1zb2RqYSIsImEiOiJjbGVxd3FkZnowcWhvM3VvMWw0c2Nqb250In0.UTSQ5_D2Hn8bTny2u3PT-w&zoomwheel=true&fresh=true#11.45/46.3207/13.9114
     return imagePreviewUrl;
 }
 
