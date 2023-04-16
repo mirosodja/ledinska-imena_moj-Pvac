@@ -39,10 +39,17 @@
     "plugins": [
       [
         "expo-image-picker",
-        {"photosPermission": "Dovoljenje za dostop do fotografij.",
+        {
+          "photosPermission": "Dovoljenje za dostop do fotografij.",
           "cameraPermission": "Dovoljenje za dostop do kamere in fotografij.",
           "//": "Brez dovoljenja za mikrofon",
           "microphonePermission": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Dovoljenje za dostop do lokacije."
         }
       ]
     ]

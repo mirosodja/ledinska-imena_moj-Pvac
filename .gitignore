@@ -78,3 +78,5 @@ web-build/
 dist/
 
 # @end expo-cli
+
+While resolving: react-dom@18.0.0 npm ERR! Found: react@17.0.1

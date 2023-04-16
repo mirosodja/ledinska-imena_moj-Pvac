@@ -15,7 +15,8 @@ function PlacesList({ places }) {
     if (!places || places.length === 0) {
         return (<View style={styles.fallbackContainer}>
             <Text style={styles.fallbackText}>
-                Nobene priljubljene točke ni. Mogoče bi kakšno dodali?</Text>
+                Nobene točke z ledinskimi imeni še niste obiskali.
+                Mogoče bi kakšno dodali s klikom na plus zgoraj?</Text>
         </View>);
     }
 

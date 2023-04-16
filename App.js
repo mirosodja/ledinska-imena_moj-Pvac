@@ -11,7 +11,6 @@ import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { init } from './util/database';
-import Marker from './components/UI/Marker';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +57,7 @@ export default function App() {
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
-              title: 'Vaša priljubljena mesta',
+              title: `Ledinska imena - pribljubljene točke`,
               headerRight: ({ tintColor }) => (
                 <IconButton
                   icon="add"
@@ -80,7 +79,7 @@ export default function App() {
           <Stack.Screen name="PlaceDetails"
             component={PlaceDetails}
             options={{
-              title: 'Loading Place...'
+              title: 'Podrobnosti o kraju'
             }}
           />
         </Stack.Navigator>
