@@ -303,7 +303,7 @@ PODS:
     - React-cxxreact (= 0.64.3)
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
-  - RNScreens (3.20.0):
+  - RNScreens (3.10.2):
     - React-Core
     - React-RCTImage
   - UMTaskManagerInterface (7.1.1):
@@ -495,10 +495,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: c7f845861e79eae13dc1e8217a3cf47a3945b504
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   UMTaskManagerInterface: 3184c93ecc290bd422c6e344badc89b601e9c29b
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
-PODFILE CHECKSUM: ffb20dd20ca5aae17ed64f49920d397a78952e17
+PODFILE CHECKSUM: 9a845b8c632dc142897c5a426ed002983a300a57
 
 COCOAPODS: 1.12.0

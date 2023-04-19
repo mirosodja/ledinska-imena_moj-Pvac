@@ -29,7 +29,16 @@
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.INTERNET",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.VIBRATE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
       ],
       "package": "in.potep.ledinskaimena"
     },
@@ -42,7 +51,6 @@
         {
           "photosPermission": "Dovoljenje za dostop do fotografij.",
           "cameraPermission": "Dovoljenje za dostop do kamere in fotografij.",
-          "//": "Brez dovoljenja za mikrofon",
           "microphonePermission": false
         }
       ],
