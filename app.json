@@ -19,7 +19,7 @@
     ],
     "ios": {
       "buildNumber": "1.0.0",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "in.potep.ledinskaimena"
     },
     "android": {

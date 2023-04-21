@@ -36,10 +36,8 @@ function Map({ navigation, route }) {
         }
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
-        console.log("lat: " + lat + " lng: " + lng);
-        const google_lat = 46.2947004;
-        const google_lng = 13.9153237;
-        console.log("google_lat: " + google_lat + " google_lng: " + google_lng);
+        // const google_lat = 46.2947004;
+        // const google_lng = 13.9153237;
         setSelectedLocation({ lat: lat, lng: lng });
     }
 

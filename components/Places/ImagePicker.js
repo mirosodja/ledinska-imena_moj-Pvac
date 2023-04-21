@@ -31,9 +31,12 @@ function ImagePicker({ onTakeImage }) {
 
         const image = await launchCameraAsync(
             {
-                allowEditing: true,
+                mediaTypes: 'Images',
+                allowEditing: false,
                 aspect: [16, 9],
                 quality: 0.5,
+                base64: true,
+                allowsMultipleSelection: false,
             }
         );
         setPickedImage(image.uri);
