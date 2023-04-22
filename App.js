@@ -57,7 +57,7 @@ export default function App() {
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
-              title: `Ledinska imena - pribljubljene točke`,
+              title: `Ledinska imena - moj plac`,
               headerRight: ({ tintColor }) => (
                 <IconButton
                   icon="add"
