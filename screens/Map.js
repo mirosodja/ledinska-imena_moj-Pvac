@@ -91,9 +91,10 @@ function Map({ navigation, route }) {
                     }}
                 />
                 {selectedLocation && (
-                    <MapLibreGL.MarkerView coordinate={[selectedLocation.lng, selectedLocation.lat]}>
-                        <Marker />
-                    </MapLibreGL.MarkerView>
+                    <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
+                    // <MapLibreGL.MarkerView coordinate={[selectedLocation.lng, selectedLocation.lat]}>
+                    //     <Marker />
+                    // </MapLibreGL.MarkerView>
                 )}
             </MapLibreGL.MapView>
         </>

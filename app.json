@@ -59,6 +59,10 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Dovoljenje za dostop do lokacije."
         }
+      ],
+      [
+        "@maplibre/maplibre-react-native",
+        {}
       ]
     ]
   }
