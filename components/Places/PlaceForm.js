@@ -31,7 +31,7 @@ function PlaceForm({ onCreatePlace }) {
             onCreatePlace(placeData);
         }
         else {
-            Alert.alert('Missing data', 'Please fill in all fields.', [{ text: 'OK' }]);
+            Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'Zapri' }]);
         }
     }
     // TODO 
@@ -43,7 +43,7 @@ function PlaceForm({ onCreatePlace }) {
     return (
         <ScrollView style={styles.form}>
             <View>
-                <Text style={styles.label}>Title</Text>
+                <Text style={styles.label}>Vzdevek</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={changeTitleHandler}
@@ -52,7 +52,7 @@ function PlaceForm({ onCreatePlace }) {
             </View>
             <ImagePicker onTakeImage={takeImageHandler} />
             <LocationPicker onPickLocation={pickLocationHandler} />
-            <Button onPress={savePlaceHandler}>Add Place</Button>
+            <Button onPress={savePlaceHandler}>Dodaj Pvác</Button>
         </ScrollView>
     );
 }

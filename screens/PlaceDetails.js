@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
+import { Alert, ScrollView, Image, View, Text, StyleSheet } from 'react-native';
 
 import OutlinedButton from '../components/UI/OutlinedButton';
 import { Colors } from '../constants/colors';
-import { fetchPlaceDetails } from '../util/database';
+import { fetchPlaceDetails, deletePlace } from '../util/database';
 
 function PlaceDetails({ route, navigation }) {
     const [fetchedPlace, setFetchedPlace] = useState();
@@ -37,6 +37,32 @@ function PlaceDetails({ route, navigation }) {
         );
     }
 
+    function deletePlaceHandler() {
+        Alert.alert(
+            'Izbriši zapis',
+            'Potrdite izbris zapisa?',
+            [
+                {
+                    text: 'Prekliči',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Potrdi',
+                    onPress: () => {
+                        deletePlace(selectedPlaceId)
+                            .then(() => {
+                                Alert.alert('Izbrisano', 'Zapis je izbrisan.');
+                            })
+                            .catch((error) => {
+                                Alert.alert('Napaka', `Napaka pri brisanju: ${error.message}`);
+                            });
+                    },
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
     return (
         <ScrollView>
             <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
@@ -45,10 +71,10 @@ function PlaceDetails({ route, navigation }) {
                     <Text style={styles.address}>{fetchedPlace.address}</Text>
                 </View>
                 <OutlinedButton icon="map" onPress={showOnMapHandler}>
-                    View on Map
+                    Pvác na mapi
                 </OutlinedButton>
-                <OutlinedButton icon="trash" onPress={showOnMapHandler}>
-                    Delete
+                <OutlinedButton icon="trash" onPress={deletePlaceHandler}>
+                    Izbriši
                 </OutlinedButton>
             </View>
         </ScrollView>

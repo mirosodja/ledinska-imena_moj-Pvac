@@ -15,8 +15,8 @@ function ImagePicker({ onTakeImage }) {
         }
 
         if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
-            Alert.alert('Insufficient permissions!',
-                'You need to grant camera permissions to use this app.');
+            Alert.alert('Premalo dovoljenj!',
+                'Aplikaciji morate omogočiti dostop do fotografij na napravi.');
             return false;
         }
 
@@ -39,11 +39,11 @@ function ImagePicker({ onTakeImage }) {
                 allowsMultipleSelection: false,
             }
         );
-        setPickedImage(image.uri);
-        onTakeImage(image.uri);
+        setPickedImage(image.assets[0].uri);
+        onTakeImage(image.assets[0].uri);
     }
 
-    let imagePreview = <Text>No image picked yet.</Text>;
+    let imagePreview = <Text>Nobene slike še niste dodali.</Text>;
     if (pickedImage) {
         imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
     }
@@ -53,7 +53,7 @@ function ImagePicker({ onTakeImage }) {
             <View style={styles.imagePreview}>
                 {imagePreview}
             </View>
-            <OutlinedButton icon="camera" onPress={takeImageHandler}>Take image</OutlinedButton>
+            <OutlinedButton icon="camera" onPress={takeImageHandler}>Slikaj moj Pvác</OutlinedButton>
         </View>);
 
 }

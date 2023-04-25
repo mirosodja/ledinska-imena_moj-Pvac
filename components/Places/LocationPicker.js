@@ -56,8 +56,8 @@ function LocationPicker({ onPickLocation }) {
 
         if (locationPermissionInformation.status === PermissionStatus.DENIED) {
             Alert.alert(
-                'Insufficient permissions!',
-                'You need to grant location permissions to use this app.'
+                'Premalo dovoljenj!',
+                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
             );
             return false;
         }
@@ -83,7 +83,7 @@ function LocationPicker({ onPickLocation }) {
         navigation.navigate('Map');
     }
 
-    let locationPreview = <Text>No location picked yet.</Text>;
+    let locationPreview = <Text>Nobenega Pváca še niste dodali.</Text>;
 
     if (pickedLocation) {
         locationPreview = (
@@ -101,10 +101,10 @@ function LocationPicker({ onPickLocation }) {
             <View style={styles.mapPreview}>{locationPreview}</View>
             <View style={styles.actions}>
                 <OutlinedButton icon="location" onPress={getLocationHandler}>
-                    Locate User
+                    Lociraj me
                 </OutlinedButton>
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>
-                    Pick on Map
+                    Pvác na mapi
                 </OutlinedButton>
             </View>
         </View>

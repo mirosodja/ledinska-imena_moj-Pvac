@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, StyleSheet, Text, Image } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
@@ -27,7 +27,7 @@ function Map({ navigation, route }) {
         longitude: initialLocation ? initialLocation.lng : 13.893405,
         // latitudeDelta: 0.0888, // prej 0.0922 
         // longitudeDelta: 0.0405,
-        zoomLevel: 10,
+        zoomLevel: 14,
     };
 
     function selectLocationHandler(event) {
@@ -36,8 +36,6 @@ function Map({ navigation, route }) {
         }
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
-        // const google_lat = 46.2947004;
-        // const google_lng = 13.9153237;
         setSelectedLocation({ lat: lat, lng: lng });
     }
 

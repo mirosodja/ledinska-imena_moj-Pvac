@@ -11,6 +11,7 @@ import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { init } from './util/database';
+import Help from './screens/Help';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,14 +58,22 @@ export default function App() {
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
-              title: `Ledinska imena - moj plac`,
+              title: `Moj Pvác`,
               headerRight: ({ tintColor }) => (
-                <IconButton
-                  icon="add"
-                  size={24}
-                  color={tintColor}
-                  onPress={() => navigation.navigate('AddPlace')}
-                />
+                <>
+                  <IconButton
+                    icon="add"
+                    size={24}
+                    color={tintColor}
+                    onPress={() => navigation.navigate('AddPlace')}
+                  />
+                  <IconButton
+                    icon="help"
+                    size={24}
+                    color={tintColor}
+                    onPress={() => navigation.navigate('Help')}
+                  />
+                </>
               ),
             })}
           />
@@ -72,16 +81,17 @@ export default function App() {
             name="AddPlace"
             component={AddPlace}
             options={{
-              title: 'Dodaj novo mesto',
+              title: 'Dodaj moj Pvác',
             }}
           />
           <Stack.Screen name="Map" component={Map} />
           <Stack.Screen name="PlaceDetails"
             component={PlaceDetails}
             options={{
-              title: 'Podrobnosti o kraju'
+              title: 'Podrobnosti o Pvácu'
             }}
           />
+          <Stack.Screen name="Help" component={Help} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
