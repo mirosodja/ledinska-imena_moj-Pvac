@@ -34,9 +34,6 @@ function PlaceForm({ onCreatePlace }) {
             Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'Zapri' }]);
         }
     }
-    // TODO 
-    // => pazi, tu ni error handlerja, če niso vsi podatki izpolnjeni 
-    // => prav tako je problem, ker, če pustiš prazno, pa si prej že vnesel, vrne napako, ker je id isti
     // TODO
     // => read location on load
 

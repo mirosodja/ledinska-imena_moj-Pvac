@@ -39,8 +39,10 @@ function ImagePicker({ onTakeImage }) {
                 allowsMultipleSelection: false,
             }
         );
-        setPickedImage(image.assets[0].uri);
-        onTakeImage(image.assets[0].uri);
+        if (!image.canceled) {
+            setPickedImage(image.assets[0].uri);
+            onTakeImage(image.assets[0].uri);
+        }
     }
 
     let imagePreview = <Text>Nobene slike še niste dodali.</Text>;
