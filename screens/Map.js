@@ -23,11 +23,9 @@ function Map({ navigation, route }) {
 
 
     const region = {
-        latitude: initialLocation ? initialLocation.lat : 46.291133,
-        longitude: initialLocation ? initialLocation.lng : 13.893405,
-        // latitudeDelta: 0.0888, // prej 0.0922 
-        // longitudeDelta: 0.0405,
-        zoomLevel: 14,
+        latitude: initialLocation ? initialLocation.lat : 46.338290,
+        longitude: initialLocation ? initialLocation.lng : 13.970405,
+        zoomLevel: initialLocation ? 14 : 10,
     };
 
     function selectLocationHandler(event) {
@@ -77,9 +75,8 @@ function Map({ navigation, route }) {
             <MapLibreGL.MapView
                 style={styles.map}
                 logoEnabled={false}
-                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4" cle
+                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
                 onPress={selectLocationHandler}
-                initialLocation={region}
                 projectionMode="mercator"
             >
                 <MapLibreGL.Camera
@@ -90,9 +87,6 @@ function Map({ navigation, route }) {
                 />
                 {selectedLocation && (
                     <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
-                    // <MapLibreGL.MarkerView coordinate={[selectedLocation.lng, selectedLocation.lat]}>
-                    //     <Marker />
-                    // </MapLibreGL.MarkerView>
                 )}
             </MapLibreGL.MapView>
         </>
