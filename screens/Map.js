@@ -5,7 +5,6 @@ import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
 
 import IconButton from "../components/UI/IconButton";
-import Marker from "../components/UI/Marker";
 
 // set MapLibreGL to mapbox tile server
 MapLibreGL.setAccessToken(MAP_BOX_TOKEN);
@@ -42,8 +41,8 @@ function Map({ navigation, route }) {
     const savedPickedLocationHandler = useCallback(() => {
         if (!selectedLocation) {
             Alert.alert(
-                "No location picked!",
-                "You have to pick a location (by tapping on the map) first!"
+                "Niste dodali Pváca!",
+                "Pvác dodate tako, da tapnete na mapo!"
             );
             return;
         }
@@ -60,12 +59,20 @@ function Map({ navigation, route }) {
         }
         navigation.setOptions({
             headerRight: ({ tintColor }) => (
-                <IconButton
-                    icon="save"
-                    size={24}
-                    color={tintColor}
-                    onPress={savedPickedLocationHandler}
-                />
+                <>
+                    <IconButton
+                        icon="save"
+                        size={24}
+                        color={tintColor}
+                        onPress={savedPickedLocationHandler}
+                    />
+                    <IconButton
+                        icon="location"
+                        size={24}
+                        color={tintColor}
+                        onPress={() => navigation.navigate('Info')}
+                    />
+                </>
             ),
         });
     }, [navigation, savedPickedLocationHandler]);

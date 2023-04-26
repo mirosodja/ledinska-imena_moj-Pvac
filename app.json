@@ -63,6 +63,20 @@
       [
         "@maplibre/maplibre-react-native",
         {}
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "buildToolsVersion": "31.0.0",
+            "minSDKVersion": 21
+          },
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
+        }
       ]
     ]
   }

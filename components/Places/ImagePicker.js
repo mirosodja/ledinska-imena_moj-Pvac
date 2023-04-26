@@ -55,7 +55,7 @@ function ImagePicker({ onTakeImage }) {
             <View style={styles.imagePreview}>
                 {imagePreview}
             </View>
-            <OutlinedButton icon="camera" onPress={takeImageHandler}>Slikaj moj Pvác</OutlinedButton>
+            <OutlinedButton icon="camera" onPress={takeImageHandler}>Slikaj Pvác</OutlinedButton>
         </View>);
 
 }

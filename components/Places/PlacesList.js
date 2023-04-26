@@ -1,4 +1,4 @@
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, Dimens } from "react-native";
 import PlaceItem from "./PlaceItem";
 import { Colors } from "../../constants/colors";
 import { useNavigation } from "@react-navigation/native";
@@ -13,17 +13,22 @@ function PlacesList({ places }) {
     }
 
     if (!places || places.length === 0) {
-        return (<View style={styles.fallbackContainer}>
-            <Text style={styles.fallbackText}>
-                Nobene točke z ledinskimi imeni še niste obiskali.
-                Mogoče bi kakšno dodali s klikom na plus zgoraj?</Text>
-        </View>);
+        return (
+            <View style={styles.fallbackContainer}>
+                <Text style={styles.fallbackText}>
+                    Moj Pvác prikazuje ledinska imena, kot so jim včasih rekli.
+                    Mogoče bi kakšno dodali tako, da tapnete na plus zgoraj?
+                </Text>
+                <Text style={styles.fallbackText}>
+                    Več o ledinskih imenih pa si lahko ogledate tako, da tapnete na 'i'?
+                </Text>
+            </View>);
     }
 
     return (<FlatList style={styles.list}
         data={places}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <PlaceItem place={item} onSelect={ selectPlaceHandler} />}
+        renderItem={({ item }) => <PlaceItem place={item} onSelect={selectPlaceHandler} />}
     />
     );
 }
@@ -36,12 +41,16 @@ const styles = StyleSheet.create({
     },
     fallbackContainer: {
         flex: 1,
+        flexDirection: 'column',
+        margin: 12,
+        verticalAlign: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
     },
     fallbackText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: Colors.primary50,
+        textAlign: 'left',
+        marginBottom: 12,
     },
 });

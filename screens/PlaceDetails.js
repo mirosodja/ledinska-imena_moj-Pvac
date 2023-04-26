@@ -32,7 +32,7 @@ function PlaceDetails({ route, navigation }) {
     if (!fetchedPlace) {
         return (
             <View style={styles.fallback}>
-                <Text>Loading place data...</Text>
+                <Text>Nalagam Pvác...</Text>
             </View>
         );
     }
