@@ -80,10 +80,13 @@ function LocationPicker({ onPickLocation }) {
     }
 
     function pickOnMapHandler() {
-        navigation.navigate('Map');
+        navigation.navigate('Map', pickedLocation ? {
+            initialLat: pickedLocation.lat,
+            initialLng: pickedLocation.lng,
+        }: undefined);
     }
 
-    let locationPreview = <Text>Nobenega Pváca še niste dodali.</Text>;
+    let locationPreview = <Text>Dodajte Pvác.</Text>;
 
     if (pickedLocation) {
         locationPreview = (

@@ -9,6 +9,7 @@ function Help() {
             <Text style={styles.text}>Ledinska imena so v Sloveniji zelo razširjena, saj je bila tudi narečna raznolikost zelo velika. Vsa ta raznolikost se odraža tudi v poimenovanju krajev.</Text>
             <Text style={styles.text}>Podatke o ledinskih imenih, ki ji uporabja tudi 'Moj Pvác', lahko najdete na spletni strani http://www.ledinskaimena.si/, izdano so pod licenco:</Text>
             <Text style={styles.textLicense}>CC-BY-4.0: Flu-Led – ledinskaimena.si</Text>
+            <Text style={styles.text}>Podatki so za občine na severozahodu Slovenije in sicer za naslednje občine: Bohinj, Bovec, Gorje, Jesenice, Jezersko, Kranj, Kranjska gora, Radovljica, Tržič in Žirovnica.</Text>
         </View>
     );
 }

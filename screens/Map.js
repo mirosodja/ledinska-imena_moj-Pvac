@@ -17,14 +17,16 @@ function Map({ navigation, route }) {
         lat: route.params.initialLat,
         lng: route.params.initialLng
     };
-
+    // TODO: change initial location to current location
+    // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+    const [marker, setMarker] = useState(null);
 
 
     const region = {
-        latitude: initialLocation ? initialLocation.lat : 46.338290,
-        longitude: initialLocation ? initialLocation.lng : 13.970405,
-        zoomLevel: initialLocation ? 14 : 10,
+        latitude: initialLocation ? initialLocation.lat : 46.2949265,
+        longitude: initialLocation ? initialLocation.lng : 13.9140825,
+        zoomLevel: initialLocation ? 10 : 16,
     };
 
     function selectLocationHandler(event) {
@@ -36,13 +38,19 @@ function Map({ navigation, route }) {
         setSelectedLocation({ lat: lat, lng: lng });
     }
 
+    const onMapPress = async (event) => {
+        setMarker({ coordinates: event.geometry.coordinates });
+        setTimeout(() => {
+            setMarker(null);
+        }, 5000);
+    };
 
 
     const savedPickedLocationHandler = useCallback(() => {
         if (!selectedLocation) {
             Alert.alert(
-                "Niste dodali Pváca!",
-                "Pvác dodate tako, da tapnete na mapo!"
+                "Niste izbrali Pváca!",
+                "Pvác izberete tako, da tapnete na mapo!"
             );
             return;
         }

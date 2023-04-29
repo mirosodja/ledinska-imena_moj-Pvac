@@ -45,7 +45,7 @@ function ImagePicker({ onTakeImage }) {
         }
     }
 
-    let imagePreview = <Text>Nobene slike še niste dodali.</Text>;
+    let imagePreview = <Text>Izberite sliko.</Text>;
     if (pickedImage) {
         imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
     }
