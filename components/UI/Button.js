@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
     button: {
         paddingHorizontal: 12,
         paddingVertical: 8,
-        margin: 4,
+        marginTop: 8,
+        marginRight: 8,
+        marginLeft: 8,
+        marginBottom: 20,
         backgroundColor: Colors.primary800,
         elevation: 4,
         shadowColor: 'black',

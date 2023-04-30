@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
@@ -46,6 +47,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="dark" />
+      <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
@@ -94,6 +96,7 @@ export default function App() {
           <Stack.Screen name="Info" component={Info} />
         </Stack.Navigator>
       </NavigationContainer>
+      </SafeAreaView>
     </>
   );
 }
