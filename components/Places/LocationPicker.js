@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, View, StyleSheet, Image, Text } from "react-native";
-import {
-    getCurrentPositionAsync,
-    useForegroundPermissions,
-    PermissionStatus
-} from "expo-location";
+import { View, StyleSheet, Image, Text } from "react-native";
 import {
     useNavigation,
     useRoute,

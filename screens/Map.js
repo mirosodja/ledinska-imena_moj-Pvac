@@ -1,10 +1,10 @@
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState, useEffect, useRef } from "react";
 import { Alert, StyleSheet } from "react-native";
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import {
-    getCurrentPositionAsync, 
-    useForegroundPermissions, 
-    PermissionStatus
+    getCurrentPositionAsync,
+    useForegroundPermissions,
+    PermissionStatus,
 } from "expo-location";
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
@@ -25,13 +25,12 @@ function Map({ navigation, route }) {
     // TODO: change initial location to current location
     // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+    const [currentLocation, setCurrentLocation] = useState(null);
     const [locationPermissionInformation, requestPermission] =
         useForegroundPermissions();
-    const [marker, setMarker] = useState(null);
-
+    const mapRef = useRef(null);
 
     const region = {
-        //TODO popravi zoom in koordinate
         latitude: selectedLocation ? selectedLocation.lat : 46.310376,
         longitude: selectedLocation ? selectedLocation.lng : 13.827434,
         zoomLevel: selectedLocation ? 12 : 16,
@@ -40,21 +39,26 @@ function Map({ navigation, route }) {
     // TODO: export for outside use and permission check
 
     async function verifyPermission() {
-        if (
-            locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-        ) {
-            const permissionResponse = await requestPermission();
+        try {
+            if (
+                locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+            ) {
+                const permissionResponse = await requestPermission();
 
-            return permissionResponse.granted;
+                return permissionResponse.granted;
+            }
+
+            if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+                Alert.alert(
+                    'Premalo dovoljenj!',
+                    'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
+                );
+                return false;
+            }
+        } catch (error) {
+            console.log(error);
         }
 
-        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-            Alert.alert(
-                'Premalo dovoljenj!',
-                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
-            );
-            return false;
-        }
         return true;
     }
 
@@ -65,7 +69,12 @@ function Map({ navigation, route }) {
         }
 
         const location = await getCurrentPositionAsync();
-        console.log(location.coords.latitude, location.coords.longitude);
+        setCurrentLocation({
+            lat: location.coords.latitude,
+            lng: location.coords.longitude,
+        });
+        await showMarker(location);
+
     }
 
     function selectLocationHandler(event) {
@@ -74,13 +83,20 @@ function Map({ navigation, route }) {
         setSelectedLocation({ lat: lat, lng: lng });
     }
 
-    const onMapPress = async (event) => {
-        setMarker({ coordinates: event.geometry.coordinates });
-        setTimeout(() => {
-            setMarker(null);
-        }, 5000);
-    };
+    useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.setCamera({
+                centerCoordinate: [currentLocation.lng, currentLocation.lat],
+                zoomLevel: region.zoomLevel
+            });
+        }
+    }, [region]);
 
+    const showMarker = async () => {
+        setTimeout(() => {
+            setCurrentLocation(null);
+        }, 3000);
+    };
 
     const savedPickedLocationHandler = useCallback(() => {
         if (!selectedLocation) {
@@ -131,6 +147,7 @@ function Map({ navigation, route }) {
                 projectionMode="mercator"
             >
                 <MapLibreGL.Camera
+                    ref={mapRef}
                     defaultSettings={{
                         centerCoordinate: [region.longitude, region.latitude],
                         zoomLevel: region.zoomLevel,
@@ -139,6 +156,7 @@ function Map({ navigation, route }) {
                 {selectedLocation && (
                     <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
                 )}
+                {currentLocation && (<MapLibreGL.PointAnnotation id="2" coordinate={[currentLocation.lng, currentLocation.lat]} />)}
             </MapLibreGL.MapView>
         </>
     );
