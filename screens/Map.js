@@ -1,11 +1,11 @@
 import { useCallback, useLayoutEffect, useState, useEffect, useRef } from "react";
 import { Alert, StyleSheet } from "react-native";
-import MapLibreGL from '@maplibre/maplibre-react-native';
 import {
     getCurrentPositionAsync,
-    useForegroundPermissions,
     PermissionStatus,
+    useForegroundPermissions,
 } from "expo-location";
+import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
 
@@ -38,43 +38,39 @@ function Map({ navigation, route }) {
 
     // TODO: export for outside use and permission check
 
-    async function verifyPermission() {
-        try {
-            if (
-                locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-            ) {
-                const permissionResponse = await requestPermission();
+    async function verifyPermissions() {
+        if (
+            locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+        ) {
+            const permissionResponse = await requestPermission();
 
-                return permissionResponse.granted;
-            }
+            return permissionResponse.granted;
+        }
 
-            if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-                Alert.alert(
-                    'Premalo dovoljenj!',
-                    'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
-                );
-                return false;
-            }
-        } catch (error) {
-            console.log(error);
+        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+            Alert.alert(
+                'Premalo dovoljenj!',
+                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
+            );
+            return false;
         }
 
         return true;
     }
 
     async function getCurrentLocationHandler() {
-        const hasPermission = await verifyPermission();
+        const hasPermission = await verifyPermissions();
         if (!hasPermission) {
             return;
         }
 
         const location = await getCurrentPositionAsync();
         setCurrentLocation({
-            lat: location.coords.latitude,
             lng: location.coords.longitude,
+            lat: location.coords.latitude,
         });
-        await showMarker(location);
-
+        console.log(currentLocation);
+        await showMarker();
     }
 
     function selectLocationHandler(event) {
@@ -82,7 +78,7 @@ function Map({ navigation, route }) {
         const lng = event.geometry.coordinates[0];
         setSelectedLocation({ lat: lat, lng: lng });
     }
-
+    // TODO: add useEffect to set camera to current location
     useEffect(() => {
         if (mapRef.current) {
             mapRef.current.setCamera({
@@ -147,11 +143,11 @@ function Map({ navigation, route }) {
                 projectionMode="mercator"
             >
                 <MapLibreGL.Camera
-                    ref={mapRef}
                     defaultSettings={{
                         centerCoordinate: [region.longitude, region.latitude],
                         zoomLevel: region.zoomLevel,
                     }}
+                    ref={mapRef}
                 />
                 {selectedLocation && (
                     <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
