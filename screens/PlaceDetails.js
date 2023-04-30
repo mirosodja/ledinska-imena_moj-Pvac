@@ -7,6 +7,7 @@ import { fetchPlaceDetails, deletePlace } from '../util/database';
 
 function PlaceDetails({ route, navigation }) {
     const [fetchedPlace, setFetchedPlace] = useState();
+    const selectedPlaceId = route.params.placeId;
 
     function showOnMapHandler() {
         navigation.navigate('Map', {
@@ -14,8 +15,6 @@ function PlaceDetails({ route, navigation }) {
             initialLng: fetchedPlace.location.lng,
         });
     }
-
-    const selectedPlaceId = route.params.placeId;
 
     useEffect(() => {
         async function loadPlaceData() {
@@ -51,6 +50,7 @@ function PlaceDetails({ route, navigation }) {
                     onPress: () => {
                         deletePlace(selectedPlaceId)
                             .then(() => {
+                                navigation.navigate('AllPlaces');
                                 Alert.alert('Izbrisano', 'Zapis je izbrisan.');
                             })
                             .catch((error) => {
