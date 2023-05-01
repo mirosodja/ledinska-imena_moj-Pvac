@@ -1,5 +1,10 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
+import {
+    getCurrentPositionAsync,
+    useForegroundPermissions,
+    PermissionStatus
+} from "expo-location";
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
@@ -20,6 +25,8 @@ function Map({ navigation, route }) {
     // TODO: change initial location to current location
     // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+    const [locationPermissionInformation, requestPermission] =
+        useForegroundPermissions();
     const [marker, setMarker] = useState(null);
 
 
@@ -33,6 +40,36 @@ function Map({ navigation, route }) {
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
         setSelectedLocation({ lat: lat, lng: lng });
+    }
+
+    async function verifyPermission() {
+        locationPermissionInformation = PermissionStatus;
+        if (
+            locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+        ) {
+            const permissionResponse = await requestPermission();
+            return permissionResponse.granted;
+        }
+
+        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+            Alert.alert(
+                'Premalo dovoljenj!',
+                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    async function getCurrentLocationHandler() {
+        const hasPermission = await verifyPermission();
+        if (!hasPermission) {
+            return;
+        }
+
+        const location = await getCurrentPositionAsync();
+        console.log(location);
     }
 
     const onMapPress = async (event) => {
@@ -75,7 +112,7 @@ function Map({ navigation, route }) {
                         icon="location"
                         size={24}
                         color={tintColor}
-                        onPress={() => navigation.navigate('Info')}
+                        onPress={getCurrentLocationHandler}
                     />
                 </>
             ),
