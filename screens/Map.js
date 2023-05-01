@@ -1,10 +1,6 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
-import {
-    getCurrentPositionAsync,
-    useForegroundPermissions,
-    PermissionStatus,
-} from "expo-location";
+import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
@@ -25,9 +21,7 @@ function Map({ navigation, route }) {
     // TODO: change initial location to current location
     // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
-    const [locationPermissionInformation, requestPermission] =
-        useForegroundPermissions();
-    const [marker, setMarker] = useState(null);
+    const [location, setLocation] = useState(null);
 
 
     const region = {
@@ -42,48 +36,24 @@ function Map({ navigation, route }) {
         setSelectedLocation({ lat: lat, lng: lng });
     }
 
-    async function verifyPermission() {
-        if (
-            locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-        ) {
-            const permissionResponse = await requestPermission();
-
-            return permissionResponse.granted;
-        }
-
-        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+    const getLocationHandler = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
             Alert.alert(
                 'Premalo dovoljenj!',
-                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
+                'Aplikaciji morate omogočiti dostop do lokacije na napravi.',
+                [{ text: 'V redu' }]
             );
-            return false;
-        }
-
-        return true;
-    }
-
-    async function getLocationHandler() {
-        const hasPermission = await verifyPermission();
-
-        if (!hasPermission) {
             return;
         }
-
-        const location = await getCurrentPositionAsync({ accuracy: 6 });
-        // setPickedLocation({
-        //     lat: location.coords.latitude,
-        //     lng: location.coords.longitude
-        // });
-        console.log(location);
-    }
-
-    const onMapPress = async (event) => {
-        setMarker({ coordinates: event.geometry.coordinates });
+        const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude });
         setTimeout(() => {
-            setMarker(null);
-        }, 5000);
+            setLocation(null);
+        }, 3000);
+        console.log(currentLocation.coords.longitude, currentLocation.coords.latitude);
+        console.log(location);
     };
-
 
     const savedPickedLocationHandler = useCallback(() => {
         if (!selectedLocation) {
@@ -141,6 +111,9 @@ function Map({ navigation, route }) {
                 />
                 {selectedLocation && (
                     <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
+                )}
+                {location && (
+                    <MapLibreGL.PointAnnotation id="2" coordinate={[location.lng, location.lat]} />
                 )}
             </MapLibreGL.MapView>
         </>
