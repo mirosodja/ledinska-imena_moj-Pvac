@@ -31,7 +31,7 @@ function PlaceForm({ onCreatePlace }) {
             onCreatePlace(placeData);
         }
         else {
-            Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'Zapri' }]);
+            Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'V redu' }]);
         }
     }
     // TODO
