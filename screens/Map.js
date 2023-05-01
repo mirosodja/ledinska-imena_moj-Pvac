@@ -43,11 +43,11 @@ function Map({ navigation, route }) {
     }
 
     async function verifyPermission() {
-        locationPermissionInformation = PermissionStatus;
         if (
             locationPermissionInformation.status === PermissionStatus.UNDETERMINED
         ) {
             const permissionResponse = await requestPermission();
+
             return permissionResponse.granted;
         }
 
@@ -62,13 +62,18 @@ function Map({ navigation, route }) {
         return true;
     }
 
-    async function getCurrentLocationHandler() {
+    async function getLocationHandler() {
         const hasPermission = await verifyPermission();
+
         if (!hasPermission) {
             return;
         }
 
         const location = await getCurrentPositionAsync();
+        // setPickedLocation({
+        //     lat: location.coords.latitude,
+        //     lng: location.coords.longitude
+        // });
         console.log(location);
     }
 
@@ -112,7 +117,7 @@ function Map({ navigation, route }) {
                         icon="location"
                         size={24}
                         color={tintColor}
-                        onPress={getCurrentLocationHandler}
+                        onPress={getLocationHandler}
                     />
                 </>
             ),

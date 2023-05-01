@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, View, StyleSheet, Image, Text } from "react-native";
-import {
-    getCurrentPositionAsync,
-    useForegroundPermissions,
-    PermissionStatus
-} from "expo-location";
+import { View, StyleSheet, Image, Text } from "react-native";
 import {
     useNavigation,
     useRoute,
@@ -21,9 +16,6 @@ function LocationPicker({ onPickLocation }) {
 
     const navigation = useNavigation();
     const route = useRoute();
-
-    const [locationPermissionInformation, requestPermission] =
-        useForegroundPermissions();
 
     useEffect(() => {
         if (isFocused && route.params) {
@@ -44,40 +36,6 @@ function LocationPicker({ onPickLocation }) {
         }
         handleLocation();
     }, [pickedLocation, onPickLocation]);
-
-    async function verifyPermission() {
-        if (
-            locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-        ) {
-            const permissionResponse = await requestPermission();
-
-            return permissionResponse.granted;
-        }
-
-        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-            Alert.alert(
-                'Premalo dovoljenj!',
-                'Aplikaciji morate omogočiti dostop do lokacije na napravi.'
-            );
-            return false;
-        }
-
-        return true;
-    }
-
-    async function getLocationHandler() {
-        const hasPermission = await verifyPermission();
-
-        if (!hasPermission) {
-            return;
-        }
-
-        const location = await getCurrentPositionAsync();
-        setPickedLocation({
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-        });
-    }
 
     function pickOnMapHandler() {
         navigation.navigate('Map', pickedLocation ? {
@@ -104,7 +62,7 @@ function LocationPicker({ onPickLocation }) {
         <View>
             <View style={styles.mapPreview}>{locationPreview}</View>
             <View style={styles.actions}>
-                <OutlinedButton icon="location" onPress={getLocationHandler}>
+                <OutlinedButton icon="location">
                     Lociraj me
                 </OutlinedButton>
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>
