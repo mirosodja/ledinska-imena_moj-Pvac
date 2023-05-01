@@ -83,6 +83,7 @@ function LocationPicker({ onPickLocation }) {
         navigation.navigate('Map', pickedLocation ? {
             initialLat: pickedLocation.lat,
             initialLng: pickedLocation.lng,
+            showHeaderButton: true
         }: undefined);
     }
 

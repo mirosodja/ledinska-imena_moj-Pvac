@@ -17,7 +17,6 @@ function Map({ navigation, route }) {
         lat: route.params.initialLat,
         lng: route.params.initialLng
     };
-    const showHeaderButton = route.params && route.params.showHeaderButton;
     // TODO: change initial location to current location
     // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
@@ -31,9 +30,6 @@ function Map({ navigation, route }) {
     };
 
     function selectLocationHandler(event) {
-        if (initialLocation) {
-            return;
-        }
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
         setSelectedLocation({ lat: lat, lng: lng });
@@ -63,7 +59,7 @@ function Map({ navigation, route }) {
     }, [navigation, selectedLocation]);
 
     useLayoutEffect(() => {
-        if (!showHeaderButton) {
+        if (route.params && !route.params.showHeaderButton) {
             return;
         }
         navigation.setOptions({
