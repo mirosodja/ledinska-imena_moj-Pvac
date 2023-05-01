@@ -3,7 +3,7 @@ import { Alert, StyleSheet } from "react-native";
 import {
     getCurrentPositionAsync,
     useForegroundPermissions,
-    PermissionStatus
+    PermissionStatus,
 } from "expo-location";
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
@@ -69,7 +69,7 @@ function Map({ navigation, route }) {
             return;
         }
 
-        const location = await getCurrentPositionAsync();
+        const location = await getCurrentPositionAsync({ accuracy: 6 });
         // setPickedLocation({
         //     lat: location.coords.latitude,
         //     lng: location.coords.longitude

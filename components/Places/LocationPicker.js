@@ -42,7 +42,7 @@ function LocationPicker({ onPickLocation }) {
             initialLat: pickedLocation.lat,
             initialLng: pickedLocation.lng,
             showHeaderButton: true
-        }: undefined);
+        } : undefined);
     }
 
     let locationPreview = <Text>Dodajte Pvác.</Text>;
@@ -62,11 +62,8 @@ function LocationPicker({ onPickLocation }) {
         <View>
             <View style={styles.mapPreview}>{locationPreview}</View>
             <View style={styles.actions}>
-                <OutlinedButton icon="location">
-                    Lociraj me
-                </OutlinedButton>
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>
-                    Pvác na mapi
+                    Izberi Pvác
                 </OutlinedButton>
             </View>
         </View>
