@@ -13,8 +13,10 @@ export function init() {
             title TEXT NOT NULL,
             imageUri TEXT NOT NULL,
             address TEXT NOT NULL,
+            ledinskoIme TEXT NOT NULL,
             lat REAL NOT NULL,
-            lng REAL NOT NULL
+            lng REAL NOT NULL,
+            zoomLevel REAL NOT NULL
         )`,
                 [],
                 () => {

@@ -16,7 +16,7 @@ function ImagePicker({ onTakeImage }) {
 
         if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
             Alert.alert('Premalo dovoljenj!',
-                'Aplikaciji morate omogočiti dostop do fotografij na napravi.');
+                'Aplikaciji morate v Nastavitvah omogočiti dostop do fotografij in kamere na napravi.');
             return false;
         }
 

@@ -51,7 +51,7 @@
         {
           "photosPermission": "Dovoljenje za dostop do fotografij.",
           "cameraPermission": "Dovoljenje za dostop do kamere in fotografij.",
-          "microphonePermission": false
+          "microphonePermission": "Dovoljenje za dostop do mikrofona."
         }
       ],
       [

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text, ActivityIndicator } from "react-native";
 import {
     useNavigation,
     useRoute,
@@ -47,6 +47,7 @@ function LocationPicker({ onPickLocation }) {
 
     let locationPreview = <Text>Dodajte Pvác.</Text>;
 
+
     if (pickedLocation) {
         locationPreview = (
             <Image
@@ -60,7 +61,8 @@ function LocationPicker({ onPickLocation }) {
 
     return (
         <View>
-            <View style={styles.mapPreview}>{locationPreview}</View>
+            <View style={styles.mapPreview}>
+                {locationPreview}</View>
             <View style={styles.actions}>
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>
                     Izberi Pvác

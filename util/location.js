@@ -1,7 +1,7 @@
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
-export function getMapPreview(lat, lng) {
-    const imagePreviewUrl = `https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4/static/pin-s+000(${lng},${lat})/${lng},${lat},14,0/400x200?access_token=${MAP_BOX_TOKEN}`;
+export function getMapPreview(lat, lng, zoomLevel = 14) {
+    const imagePreviewUrl = `https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4/static/pin-s+000(${lng},${lat})/${lng},${lat},${zoomLevel},0/400x200?access_token=${MAP_BOX_TOKEN}`;
 
     return imagePreviewUrl;
 }

@@ -1,5 +1,5 @@
-import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { useCallback, useLayoutEffect, useState, useRef } from "react";
+import { Alert, StyleSheet, ActivityIndicator } from "react-native";
 import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
@@ -16,24 +16,27 @@ function Map({ navigation, route }) {
 
     const initialLocation = route.params && {
         lat: route.params.initialLat,
-        lng: route.params.initialLng
+        lng: route.params.initialLng,
+        zoomLevel: route.params.initialZoomLevel,
     };
-    // TODO: change initial location to current location
-    // TODO: extract boolean from route.params to show or not show header button
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [location, setLocation] = useState(null);
+    const [zoomLevel, setZoomLevel] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const mapRef = useRef(null);
 
 
     const region = {
         latitude: initialLocation ? initialLocation.lat : 46.2949265,
         longitude: initialLocation ? initialLocation.lng : 13.9140825,
-        zoomLevel: initialLocation ? 10 : 16,
+        zoomLevel: initialLocation ? initialLocation.zoomLevel : 16,
     };
+
 
     function selectLocationHandler(event) {
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
-        setSelectedLocation({ lat: lat, lng: lng });
+        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: zoomLevel });
     }
 
     const getLocationHandler = async () => {
@@ -41,18 +44,23 @@ function Map({ navigation, route }) {
         if (status !== 'granted') {
             Alert.alert(
                 'Premalo dovoljenj!',
-                'Aplikaciji morate omogočiti dostop do lokacije na napravi.',
+                'Aplikaciji morate v Nastavitvah omogočiti dostop do lokacije na napravi.',
                 [{ text: 'V redu' }]
             );
             return;
         }
+        setIsLoading(true);
         const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
-        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude });
+        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude, zoomLevel: zoomLevel ? zoomLevel : region.zoomLevel });
         setTimeout(() => {
             setLocation(null);
-        }, 3000);
-        console.log(currentLocation.coords.longitude, currentLocation.coords.latitude);
-        console.log(location);
+        }, 2000);
+        if (mapRef.current) {
+            mapRef.current.setCamera({
+                centerCoordinate: [currentLocation.coords.longitude, currentLocation.coords.latitude], zoomLevel: zoomLevel ? zoomLevel : region.zoomLevel
+            });
+        }
+        setIsLoading(false);
     };
 
     const savedPickedLocationHandler = useCallback(() => {
@@ -94,13 +102,21 @@ function Map({ navigation, route }) {
         });
     }, [navigation, savedPickedLocationHandler]);
 
+    const handleRegionDidChange = async (event) => {
+        const newZoomLevel = event.properties.zoomLevel;
+        setZoomLevel(newZoomLevel);
+        setIsLoading(false);
+    };
+
     return (
         <>
+            {isLoading && (<ActivityIndicator size="large" color="#0000ff" />)}
             <MapLibreGL.MapView
                 style={styles.map}
                 logoEnabled={false}
                 styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
                 onPress={selectLocationHandler}
+                onRegionDidChange={handleRegionDidChange}
                 projectionMode="mercator"
             >
                 <MapLibreGL.Camera
@@ -108,6 +124,7 @@ function Map({ navigation, route }) {
                         centerCoordinate: [region.longitude, region.latitude],
                         zoomLevel: region.zoomLevel,
                     }}
+                    ref={mapRef}
                 />
                 {selectedLocation && (
                     <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
