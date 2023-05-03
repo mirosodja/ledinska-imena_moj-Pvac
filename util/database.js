@@ -2,13 +2,13 @@ import * as SQLite from 'expo-sqlite';
 
 import { Place } from '../models/place';
 
-const database = SQLite.openDatabase('places.db');
+const database = SQLite.openDatabase('places.db', version = '1.0');
 
 export function init() {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS places (
+            `CREATE TABLE IF NOT EXISTS places (
             id INTEGER PRIMARY KEY NOT NULL,
             title TEXT NOT NULL,
             imageUri TEXT NOT NULL,
@@ -36,13 +36,15 @@ export function insertPlace(place) {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-                `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO places (title, imageUri, address, ledinskoIme, lat, lng, zoomLevel) VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [
                     place.title,
                     place.imageUri,
                     place.address,
+                    place.ledinskoIme,
                     place.location.lat,
                     place.location.lng,
+                    place.location.zoomLevel
                 ],
                 (_, result) => {
                     resolve(result);
@@ -73,8 +75,10 @@ export function fetchPlaces() {
                                 dp.imageUri,
                                 {
                                     address: dp.address,
+                                    dp: dp.ledinskoIme,
                                     lat: dp.lat,
                                     lng: dp.lng,
+                                    zoomLevel: dp.zoomLevel
                                 },
                                 dp.id
                             )
@@ -103,7 +107,7 @@ export function fetchPlaceDetails(id) {
                     const place = new Place(
                         dbPlace.title,
                         dbPlace.imageUri,
-                        { lat: dbPlace.lat, lng: dbPlace.lng, address: dbPlace.address },
+                        { lat: dbPlace.lat, lng: dbPlace.lng, ledinskoIme: dbPlace.ledinskoIme, address: dbPlace.address, zoomLevel: dbPlace.zoomLevel },
                         dbPlace.id
                     );
                     resolve(place);

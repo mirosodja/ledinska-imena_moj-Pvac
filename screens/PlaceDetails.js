@@ -35,7 +35,7 @@ function PlaceDetails({ route, navigation }) {
             </View>
         );
     }
-    //TODO go to main page after delete
+    
     function deletePlaceHandler() {
         Alert.alert(
             'Izbriši zapis',

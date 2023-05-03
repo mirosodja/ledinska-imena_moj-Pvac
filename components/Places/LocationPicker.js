@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import {
     useNavigation,
     useRoute,
@@ -8,7 +8,7 @@ import {
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
-import { getAddress, getMapPreview } from '../../util/location';
+import { getAddress, getMapPreview, getLedinskoIme } from '../../util/location';
 
 function LocationPicker({ onPickLocation }) {
     const [pickedLocation, setPickedLocation] = useState();
@@ -22,6 +22,7 @@ function LocationPicker({ onPickLocation }) {
             const mapPickedLocation = {
                 lat: route.params.pickedLat,
                 lng: route.params.pickedLng,
+                zoom: route.params.pickedZoomLevel,
             };
             setPickedLocation(mapPickedLocation);
         }
@@ -31,7 +32,8 @@ function LocationPicker({ onPickLocation }) {
         async function handleLocation() {
             if (pickedLocation) {
                 const address = await getAddress(pickedLocation.lat, pickedLocation.lng);
-                onPickLocation({ ...pickedLocation, address });
+                const ledinskoIme = await getLedinskoIme(pickedLocation.lat, pickedLocation.lng);
+                onPickLocation({ ...pickedLocation, address, ledinskoIme });
             }
         }
         handleLocation();
@@ -41,6 +43,7 @@ function LocationPicker({ onPickLocation }) {
         navigation.navigate('Map', pickedLocation ? {
             initialLat: pickedLocation.lat,
             initialLng: pickedLocation.lng,
+            initialZoomLevel: pickedLocation.zoom,
             showHeaderButton: true
         } : undefined);
     }
@@ -53,7 +56,7 @@ function LocationPicker({ onPickLocation }) {
             <Image
                 style={styles.image}
                 source={{
-                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng),
+                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoom),
                 }}
             />
         );

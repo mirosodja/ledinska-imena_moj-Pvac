@@ -20,7 +20,10 @@
     "ios": {
       "buildNumber": "1.0.0",
       "supportsTablet": false,
-      "bundleIdentifier": "in.potep.ledinskaimena"
+      "bundleIdentifier": "in.potep.ledinskaimena",
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": true
+      }
     },
     "android": {
       "versionCode": 1,

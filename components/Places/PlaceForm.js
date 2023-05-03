@@ -34,8 +34,6 @@ function PlaceForm({ onCreatePlace }) {
             Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'V redu' }]);
         }
     }
-    // TODO
-    // => read location on load
 
     return (
         <ScrollView style={styles.form}>

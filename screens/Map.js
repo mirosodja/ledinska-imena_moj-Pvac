@@ -1,7 +1,9 @@
-import { useCallback, useLayoutEffect, useState, useRef } from "react";
-import { Alert, StyleSheet, ActivityIndicator } from "react-native";
+import { useCallback, useLayoutEffect, useState, useRef, useEffect } from "react";
+import { Alert, StyleSheet, ActivityIndicator, Text, View } from "react-native";
 import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
+import NetInfo from "@react-native-community/netinfo";
+import { Colors } from "../constants/colors";
 import { MAP_BOX_TOKEN } from '../mapbox/key.js';
 
 
@@ -23,15 +25,23 @@ function Map({ navigation, route }) {
     const [location, setLocation] = useState(null);
     const [zoomLevel, setZoomLevel] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
 
 
     const region = {
         latitude: initialLocation ? initialLocation.lat : 46.2949265,
         longitude: initialLocation ? initialLocation.lng : 13.9140825,
-        zoomLevel: initialLocation ? initialLocation.zoomLevel : 16,
+        zoomLevel: initialLocation ? initialLocation.zoomLevel : 14,
     };
 
+    useEffect(() => {
+        const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
+            const offline = !(state.isConnected && state.isInternetReachable);
+            setOfflineStatus(offline);
+        });
+        return () => removeNetInfoSubscription();
+    }, []);
 
     function selectLocationHandler(event) {
         const lat = event.geometry.coordinates[1];
@@ -67,7 +77,7 @@ function Map({ navigation, route }) {
         if (!selectedLocation) {
             Alert.alert(
                 "Niste izbrali Pváca!",
-                "Pvác izberete tako, da tapnete na mapo!"
+                "Pvác izberete tako, da tapnete na zemljevid!"
             );
             return;
         }
@@ -75,6 +85,7 @@ function Map({ navigation, route }) {
         navigation.navigate("AddPlace", {
             pickedLat: selectedLocation.lat,
             pickedLng: selectedLocation.lng,
+            pickedZoomLevel: selectedLocation.zoomLevel,
         });
     }, [navigation, selectedLocation]);
 
@@ -110,29 +121,32 @@ function Map({ navigation, route }) {
 
     return (
         <>
-            {isLoading && (<ActivityIndicator size="large" color="#0000ff" />)}
-            <MapLibreGL.MapView
-                style={styles.map}
-                logoEnabled={false}
-                styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
-                onPress={selectLocationHandler}
-                onRegionDidChange={handleRegionDidChange}
-                projectionMode="mercator"
-            >
-                <MapLibreGL.Camera
-                    defaultSettings={{
-                        centerCoordinate: [region.longitude, region.latitude],
-                        zoomLevel: region.zoomLevel,
-                    }}
-                    ref={mapRef}
-                />
-                {selectedLocation && (
-                    <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
-                )}
-                {location && (
-                    <MapLibreGL.PointAnnotation id="2" coordinate={[location.lng, location.lat]} />
-                )}
-            </MapLibreGL.MapView>
+            {isOffline && (<View style={styles.fallbackContainer}><Text style={styles.fallbackText}>Ni internetne povezave! Zemljevida ni mogoče prikazati!</Text></View>)}
+            {isLoading && !isOffline && (<ActivityIndicator size="large" color="#0000ff" />)}
+            {!isOffline && (
+                <MapLibreGL.MapView
+                    style={styles.map}
+                    logoEnabled={false}
+                    styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
+                    onPress={selectLocationHandler}
+                    onRegionDidChange={handleRegionDidChange}
+                    projectionMode="mercator"
+                >
+                    <MapLibreGL.Camera
+                        defaultSettings={{
+                            centerCoordinate: [region.longitude, region.latitude],
+                            zoomLevel: region.zoomLevel,
+                        }}
+                        ref={mapRef}
+                    />
+                    {selectedLocation && (
+                        <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
+                    )}
+                    {location && (
+                        <MapLibreGL.PointAnnotation id="2" coordinate={[location.lng, location.lat]} />
+                    )}
+                </MapLibreGL.MapView>
+            )}
         </>
     );
 }
@@ -142,5 +156,22 @@ export default Map;
 const styles = StyleSheet.create({
     map: {
         flex: 1,
-    }
+    },
+    list: {
+        margin: 24,
+    },
+    fallbackContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        margin: 12,
+        verticalAlign: 'center',
+        justifyContent: 'center',
+    },
+    fallbackText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: Colors.alert,
+        textAlign: 'center',
+        marginBottom: 12,
+    },
 });

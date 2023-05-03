@@ -8,4 +8,5 @@ export const Colors = {
     primary800: '#031c2b',
     accent500: '#e6b30b',
     gray700: '#18425b',
+    alert: '#a83030',
   }
