@@ -75,7 +75,7 @@ export function fetchPlaces() {
                                 dp.imageUri,
                                 {
                                     address: dp.address,
-                                    dp: dp.ledinskoIme,
+                                    ledinskoIme: dp.ledinskoIme,
                                     lat: dp.lat,
                                     lng: dp.lng,
                                     zoomLevel: dp.zoomLevel

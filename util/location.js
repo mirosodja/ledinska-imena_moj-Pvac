@@ -36,7 +36,7 @@ export async function getLedinskoIme(lat, lng) {
         throw new Error('Nekaj je šlo narobe, ni podatkov!');
     }
     if (data.features.length === 0) {
-        return 'Ni podatka';
+        return 'Pvác nima ledinskega imena';
     }
     const ledinskoIme = data.features[0].properties.name_dialect;
     return ledinskoIme;

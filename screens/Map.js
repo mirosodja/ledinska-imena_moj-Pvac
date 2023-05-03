@@ -30,6 +30,7 @@ function Map({ navigation, route }) {
 
 
     const region = {
+        // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
         latitude: initialLocation ? initialLocation.lat : 46.2949265,
         longitude: initialLocation ? initialLocation.lng : 13.9140825,
         zoomLevel: initialLocation ? initialLocation.zoomLevel : 14,

@@ -13,10 +13,7 @@ function PlaceItem({ place, onSelect }) {
             <View style={styles.info}>
                 <Text style={styles.title}>{place.title}</Text>
                 <Text style={styles.address}>{place.address}</Text>
-                <View style={styles.ledinskoContainer}>
-                    <Text style={styles.ledinskoLabel}>Po domače: </Text>
-                    <Text style={styles.ledinskoIme}>{place.ledinskoIme}</Text>
-                </View>
+                <Text style={styles.ledinsko}>{place.ledinskoIme}</Text>
             </View>
         </Pressable>
     );
@@ -59,17 +56,9 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: Colors.gray700,
     },
-    ledinskoContainer: {
-        flex: 2,
-        flexDirection: 'row',
-        paddingRight: 12,
-    },
-    ledinskoLabel: {
+    ledinsko: {
+        paddingTop: 8,
         fontWeight: 'bold',
-        fontSize: 14,
-        color: Colors.gray700,
-    },
-    ledinskoIme: {
         fontSize: 14,
         color: Colors.gray700,
     },

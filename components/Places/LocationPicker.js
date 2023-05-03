@@ -22,7 +22,7 @@ function LocationPicker({ onPickLocation }) {
             const mapPickedLocation = {
                 lat: route.params.pickedLat,
                 lng: route.params.pickedLng,
-                zoom: route.params.pickedZoomLevel,
+                zoomLevel: route.params.pickedZoomLevel,
             };
             setPickedLocation(mapPickedLocation);
         }
