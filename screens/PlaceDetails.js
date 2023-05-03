@@ -13,6 +13,7 @@ function PlaceDetails({ route, navigation }) {
         navigation.navigate('Map', {
             initialLat: fetchedPlace.location.lat,
             initialLng: fetchedPlace.location.lng,
+            initialZoomLevel: fetchedPlace.location.zoomLevel,
         });
     }
 

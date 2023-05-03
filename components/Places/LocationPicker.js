@@ -43,7 +43,7 @@ function LocationPicker({ onPickLocation }) {
         navigation.navigate('Map', pickedLocation ? {
             initialLat: pickedLocation.lat,
             initialLng: pickedLocation.lng,
-            initialZoomLevel: pickedLocation.zoom,
+            initialZoomLevel: pickedLocation.zoomLevel,
             showHeaderButton: true
         } : undefined);
     }
@@ -56,7 +56,7 @@ function LocationPicker({ onPickLocation }) {
             <Image
                 style={styles.image}
                 source={{
-                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoom),
+                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoomLevel),
                 }}
             />
         );
