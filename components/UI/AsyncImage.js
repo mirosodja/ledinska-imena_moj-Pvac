@@ -1,56 +1,61 @@
 import React, {
-  Component
+  useState
 } from 'react';
 
 import {
   Image,
-  View
+  View, StyleSheet
 } from 'react-native';
 
-export default class AsyncImage extends Component {
+export default function AsyncImage(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = { loaded: false }
-  }
+  const [loaded, setLoaded] = useState(props.loaded);
+  const placeholderSource = props.placeholderSource;
+  const style = props.style;
+  const source = props.source;
 
-  render() {
-    const {
-      placeholderSource,
-      style,
-      source
-    } = this.props
+  return (
+    <View
+      style={style}>
 
-    return (
-      <View
-        style={style}>
+      <Image
+        source={source}
+        resizeMode={'contain'}
+        style={[
+          style,
+          {
+            position: 'absolute',
+            resizeMode: 'contain'
+          }
+        ]}
+        onLoad={() => setLoaded(true)}
+      />
 
-        <Image
-          source={source}
-          resizeMode={'contain'}
-          style={[
-            style,
-            {
-              position: 'absolute',
-              resizeMode: 'contain'
-            }
-          ]}
-          onLoad={this._onLoad} />
-
-        {!this.state.loaded &&
+      {!loaded &&
+        <View style={styles.container}>
           <Image
             source={placeholderSource}
-            style={[
-              {
-                position: 'relative',
-              }
-            ]} />
-        }
-      </View>
-    )
-  }
-
-  _onLoad = () => {
-    this.setState(() => ({ loaded: true }))
-  }
+            resizeMode={'contain'}
+            style={styles.image} />
+        </View>
+      }
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    verticalAlign: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 4
+  },
+});
+
+

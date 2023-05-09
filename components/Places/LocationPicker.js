@@ -64,6 +64,7 @@ function LocationPicker({ onPickLocation }) {
                     uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoomLevel),
                 }}
                 placeholderSource={require('../../assets/loading.gif')}
+                loaded={false}
             />
         );
     }
