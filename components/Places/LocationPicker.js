@@ -9,6 +9,7 @@ import {
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 import { getAddress, getMapPreview, getLedinskoIme } from '../../util/location';
+import AsyncImage from "../UI/AsyncImage";
 
 function LocationPicker({ onPickLocation }) {
     const [pickedLocation, setPickedLocation] = useState();
@@ -57,11 +58,12 @@ function LocationPicker({ onPickLocation }) {
 
     if (pickedLocation) {
         locationPreview = (
-            <Image
+            <AsyncImage
                 style={styles.image}
                 source={{
                     uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoomLevel),
                 }}
+                placeholderSource={require('../../assets/loading.gif')}
             />
         );
     }
@@ -100,6 +102,6 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
-        // borderRadius: 4
+        borderRadius: 4
     },
 });
