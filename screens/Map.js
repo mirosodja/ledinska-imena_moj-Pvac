@@ -21,8 +21,8 @@ function Map({ navigation, route }) {
         zoomLevel: route.params.initialZoomLevel,
     };
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
-    const [location, setLocation] = useState(null);
-    const [zoomLevel, setZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 14);
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [currentZoomLevel, setCurrentZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 14);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
@@ -43,10 +43,16 @@ function Map({ navigation, route }) {
         return () => removeNetInfoSubscription();
     }, []);
 
+    const handleRegionDidChange = async (event) => {
+        const newZoomLevel = event.properties.zoomLevel;
+        setCurrentZoomLevel(newZoomLevel);
+        setIsLoading(false);
+    };
+
     function selectLocationHandler(event) {
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
-        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: zoomLevel });
+        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: currentZoomLevel });
     }
 
     const getLocationHandler = async () => {
@@ -60,14 +66,14 @@ function Map({ navigation, route }) {
             return;
         }
         setIsLoading(true);
-        const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
-        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude, zoomLevel: zoomLevel });
+        const locationGps = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+        setCurrentLocation({ lat: locationGps.coords.latitude, lng: locationGps.coords.longitude });
         setTimeout(() => {
-            setLocation(null);
-        }, 2000);
+            setCurrentLocation(null);
+        }, 3000);
         if (mapRef.current) {
             mapRef.current.setCamera({
-                centerCoordinate: [currentLocation.coords.longitude, currentLocation.coords.latitude], zoomLevel: zoomLevel
+                centerCoordinate: [locationGps.coords.longitude, locationGps.coords.latitude], zoomLevel: currentZoomLevel
             });
         }
         setIsLoading(false);
@@ -85,7 +91,7 @@ function Map({ navigation, route }) {
         navigation.navigate("AddPlace", {
             pickedLat: selectedLocation.lat,
             pickedLng: selectedLocation.lng,
-            pickedZoomLevel: zoomLevel,
+            pickedZoomLevel: currentZoomLevel,
         });
     }, [navigation, selectedLocation]);
 
@@ -113,11 +119,6 @@ function Map({ navigation, route }) {
         });
     }, [navigation, savedPickedLocationHandler]);
 
-    const handleRegionDidChange = async (event) => {
-        const newZoomLevel = event.properties.zoomLevel;
-        setZoomLevel(newZoomLevel);
-        setIsLoading(false);
-    };
 
     return (
         <>
@@ -142,8 +143,8 @@ function Map({ navigation, route }) {
                     {selectedLocation && (
                         <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
                     )}
-                    {location && (
-                        <MapLibreGL.PointAnnotation id="2" coordinate={[location.lng, location.lat]} />
+                    {currentLocation && (
+                        <MapLibreGL.PointAnnotation id="2" coordinate={[currentLocation.lng, currentLocation.lat]} />
                     )}
                 </MapLibreGL.MapView>
             )}
