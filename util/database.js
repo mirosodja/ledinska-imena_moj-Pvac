@@ -8,12 +8,13 @@ export function init() {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS places (
-            id INTEGER PRIMARY KEY NOT NULL,
+                `CREATE TABLE IF NOT EXISTS places (
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             title TEXT NOT NULL,
             imageUri TEXT NOT NULL,
             address TEXT NOT NULL,
             ledinskoIme TEXT NOT NULL,
+            date TEXT NOT NULL,
             lat REAL NOT NULL,
             lng REAL NOT NULL,
             zoomLevel REAL NOT NULL
@@ -36,12 +37,13 @@ export function insertPlace(place) {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-                `INSERT INTO places (title, imageUri, address, ledinskoIme, lat, lng, zoomLevel) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO places (title, imageUri, address, ledinskoIme, date, lat, lng, zoomLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     place.title,
                     place.imageUri,
                     place.address,
                     place.ledinskoIme,
+                    place.date,
                     place.location.lat,
                     place.location.lng,
                     place.location.zoomLevel
@@ -63,7 +65,7 @@ export function fetchPlaces() {
     const promise = new Promise((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
-                'SELECT * FROM places',
+                'SELECT * FROM places ORDER BY id DESC',
                 [],
                 (_, result) => {
                     const places = [];
@@ -76,6 +78,7 @@ export function fetchPlaces() {
                                 {
                                     address: dp.address,
                                     ledinskoIme: dp.ledinskoIme,
+                                    date: dp.date,
                                     lat: dp.lat,
                                     lng: dp.lng,
                                     zoomLevel: dp.zoomLevel
@@ -107,7 +110,7 @@ export function fetchPlaceDetails(id) {
                     const place = new Place(
                         dbPlace.title,
                         dbPlace.imageUri,
-                        { lat: dbPlace.lat, lng: dbPlace.lng, ledinskoIme: dbPlace.ledinskoIme, address: dbPlace.address, zoomLevel: dbPlace.zoomLevel },
+                        { lat: dbPlace.lat, lng: dbPlace.lng, ledinskoIme: dbPlace.ledinskoIme, date: dbPlace.date, address: dbPlace.address, zoomLevel: dbPlace.zoomLevel },
                         dbPlace.id
                     );
                     resolve(place);

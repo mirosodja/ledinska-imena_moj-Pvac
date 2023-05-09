@@ -63,7 +63,7 @@ function PlaceDetails({ route, navigation }) {
             { cancelable: false },
         );
     }
-
+//TODO: add date and place old name
     return (
         <ScrollView>
             <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />

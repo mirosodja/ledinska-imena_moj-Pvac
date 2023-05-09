@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { StatusBar } from 'expo-status-bar';
@@ -18,6 +19,10 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    'OpenSBB': require('./assets/fonts/OpenSans-BoldB.ttf'),
+  });
+
   useEffect(() => {
     const prepare = async () => {
       try {
@@ -33,15 +38,24 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(
+
+    // add fontsLoaded to the dependency array
     async () => {
       if (dbInitialized) {
         await SplashScreen.hideAsync();
       }
+      if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+      }
     },
-    [dbInitialized]
+    [dbInitialized, fontsLoaded]
   );
 
   if (!dbInitialized) return null;
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <>

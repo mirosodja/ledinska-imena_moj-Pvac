@@ -31,9 +31,13 @@ function LocationPicker({ onPickLocation }) {
     useEffect(() => {
         async function handleLocation() {
             if (pickedLocation) {
+                //TODO: change in case of internationalization
+                const currentDate = new Date();
+                // format date to day., dd.mm.yyyy hh:mm
+                const date = currentDate.getDate() + '.' + (currentDate.getMonth() + 1) + '.' + currentDate.getFullYear() + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes().toString().padStart(2, '0');
                 const address = await getAddress(pickedLocation.lat, pickedLocation.lng);
                 const ledinskoIme = await getLedinskoIme(pickedLocation.lat, pickedLocation.lng);
-                onPickLocation({ ...pickedLocation, address, ledinskoIme });
+                onPickLocation({ ...pickedLocation, address, ledinskoIme, date });
             }
         }
         handleLocation();

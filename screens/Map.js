@@ -13,7 +13,6 @@ import IconButton from "../components/UI/IconButton";
 MapLibreGL.setAccessToken(MAP_BOX_TOKEN);
 
 
-
 function Map({ navigation, route }) {
 
     const initialLocation = route.params && {
@@ -23,7 +22,7 @@ function Map({ navigation, route }) {
     };
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [location, setLocation] = useState(null);
-    const [zoomLevel, setZoomLevel] = useState(null);
+    const [zoomLevel, setZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 14);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
@@ -62,13 +61,13 @@ function Map({ navigation, route }) {
         }
         setIsLoading(true);
         const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
-        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude, zoomLevel: zoomLevel ? zoomLevel : region.zoomLevel });
+        setLocation({ lat: currentLocation.coords.latitude, lng: currentLocation.coords.longitude, zoomLevel: zoomLevel });
         setTimeout(() => {
             setLocation(null);
         }, 2000);
         if (mapRef.current) {
             mapRef.current.setCamera({
-                centerCoordinate: [currentLocation.coords.longitude, currentLocation.coords.latitude], zoomLevel: zoomLevel ? zoomLevel : region.zoomLevel
+                centerCoordinate: [currentLocation.coords.longitude, currentLocation.coords.latitude], zoomLevel: zoomLevel
             });
         }
         setIsLoading(false);
@@ -86,7 +85,7 @@ function Map({ navigation, route }) {
         navigation.navigate("AddPlace", {
             pickedLat: selectedLocation.lat,
             pickedLng: selectedLocation.lng,
-            pickedZoomLevel: selectedLocation.zoomLevel,
+            pickedZoomLevel: zoomLevel,
         });
     }, [navigation, selectedLocation]);
 

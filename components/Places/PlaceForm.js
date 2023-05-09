@@ -34,7 +34,7 @@ function PlaceForm({ onCreatePlace }) {
             Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'V redu' }]);
         }
     }
-
+    //TODO: verify image size
     return (
         <ScrollView style={styles.form}>
             <View>

@@ -33,7 +33,7 @@ function ImagePicker({ onTakeImage }) {
             {
                 mediaTypes: 'Images',
                 allowEditing: false,
-                aspect: [16, 9],
+                // aspect: [16, 9],
                 quality: 0.5,
                 base64: true,
                 allowsMultipleSelection: false,
