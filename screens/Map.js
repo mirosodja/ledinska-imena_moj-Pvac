@@ -54,15 +54,6 @@ function Map({ navigation, route }) {
         const lng = event.geometry.coordinates[0];
         setSelectedLocation({ lat: lat, lng: lng, zoomLevel: currentZoomLevel });
     }
-    // TODO: add useEffect to set camera to current location
-    useEffect(() => {
-        if (mapRef.current) {
-            mapRef.current.setCamera({
-                centerCoordinate: [currentLocation.lng, currentLocation.lat],
-                zoomLevel: region.zoomLevel
-            });
-        }
-    }, [region]);
 
     const getLocationHandler = async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -166,6 +157,7 @@ export default Map;
 const styles = StyleSheet.create({
     map: {
         flex: 1,
+    },
     list: {
         margin: 24,
     },
