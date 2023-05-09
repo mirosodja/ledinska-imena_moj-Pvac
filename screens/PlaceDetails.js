@@ -36,7 +36,7 @@ function PlaceDetails({ route, navigation }) {
             </View>
         );
     }
-    
+
     function deletePlaceHandler() {
         Alert.alert(
             'Izbriši zapis',
@@ -63,13 +63,14 @@ function PlaceDetails({ route, navigation }) {
             { cancelable: false },
         );
     }
-//TODO: add date and place old name
+    //TODO: add date and place old name
     return (
         <ScrollView>
             <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
             <View style={styles.locationContainer}>
                 <View style={styles.addressContainer}>
                     <Text style={styles.address}>{fetchedPlace.address}</Text>
+                    <Text style={styles.ledinskoIme}>{fetchedPlace.ledinskoIme}</Text>
                 </View>
                 <OutlinedButton icon="map" onPress={showOnMapHandler}>
                     Pvác na mapi
@@ -106,6 +107,13 @@ const styles = StyleSheet.create({
         color: Colors.primary500,
         textAlign: 'center',
         fontWeight: 'bold',
+        fontSize: 16,
+    },
+    ledinskoIme: {
+        fontFamily: 'OpenSBB',
+        color: Colors.primary500,
+        textAlign: 'center',
+        paddingTop: 8,
         fontSize: 16,
     },
 });
