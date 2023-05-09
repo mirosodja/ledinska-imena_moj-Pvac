@@ -13,6 +13,8 @@ function PlaceItem({ place, onSelect }) {
             <View style={styles.info}>
                 <Text style={styles.title}>{place.title}</Text>
                 <Text style={styles.address}>{place.address}</Text>
+                <Text style={styles.ledinsko}>{place.ledinskoIme}</Text>
+                <Text style={styles.address}>{place.date}</Text>
             </View>
         </Pressable>
     );
@@ -44,15 +46,21 @@ const styles = StyleSheet.create({
     },
     info: {
         flex: 2,
-        padding: 12,
+        padding: 4,
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 16,
         color: Colors.gray700,
     },
     address: {
         fontSize: 12,
+        color: Colors.gray700,
+    },
+    ledinsko: {
+        fontFamily: 'OpenSBB',
+        paddingTop: 8,
+        fontSize: 14,
         color: Colors.gray700,
     },
 });

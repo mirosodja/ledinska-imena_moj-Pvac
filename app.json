@@ -20,7 +20,10 @@
     "ios": {
       "buildNumber": "1.0.0",
       "supportsTablet": false,
-      "bundleIdentifier": "in.potep.ledinskaimena"
+      "bundleIdentifier": "in.potep.ledinskaimena",
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": true
+      }
     },
     "android": {
       "versionCode": 1,
@@ -51,7 +54,7 @@
         {
           "photosPermission": "Dovoljenje za dostop do fotografij.",
           "cameraPermission": "Dovoljenje za dostop do kamere in fotografij.",
-          "microphonePermission": false
+          "microphonePermission": "Dovoljenje za dostop do mikrofona."
         }
       ],
       [

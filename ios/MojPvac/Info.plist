@@ -54,6 +54,8 @@
     <string>Allow $(PRODUCT_NAME) to access your location</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Dovoljenje za dostop do mikrofona.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Dovoljenje za dostop do fotografij.</string>
     <key>UILaunchStoryboardName</key>

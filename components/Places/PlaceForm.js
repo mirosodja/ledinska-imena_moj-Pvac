@@ -31,12 +31,10 @@ function PlaceForm({ onCreatePlace }) {
             onCreatePlace(placeData);
         }
         else {
-            Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'Zapri' }]);
+            Alert.alert('Premalo podatkov', 'Vsa polja morajo biti izpolnjena.', [{ text: 'V redu' }]);
         }
     }
-    // TODO
-    // => read location on load
-
+    //TODO: verify image size
     return (
         <ScrollView style={styles.form}>
             <View>

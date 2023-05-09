@@ -8,7 +8,8 @@ import {
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
-import { getAddress, getMapPreview } from '../../util/location';
+import { getAddress, getMapPreview, getLedinskoIme } from '../../util/location';
+import AsyncImage from "../UI/AsyncImage";
 
 function LocationPicker({ onPickLocation }) {
     const [pickedLocation, setPickedLocation] = useState();
@@ -21,6 +22,7 @@ function LocationPicker({ onPickLocation }) {
             const mapPickedLocation = {
                 lat: route.params.pickedLat,
                 lng: route.params.pickedLng,
+                zoomLevel: route.params.pickedZoomLevel,
             };
             setPickedLocation(mapPickedLocation);
         }
@@ -29,8 +31,13 @@ function LocationPicker({ onPickLocation }) {
     useEffect(() => {
         async function handleLocation() {
             if (pickedLocation) {
+                //TODO: change in case of internationalization
+                const currentDate = new Date();
+                // format date to day., dd.mm.yyyy hh:mm
+                const date = currentDate.getDate() + '.' + (currentDate.getMonth() + 1) + '.' + currentDate.getFullYear() + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes().toString().padStart(2, '0');
                 const address = await getAddress(pickedLocation.lat, pickedLocation.lng);
-                onPickLocation({ ...pickedLocation, address });
+                const ledinskoIme = await getLedinskoIme(pickedLocation.lat, pickedLocation.lng);
+                onPickLocation({ ...pickedLocation, address, ledinskoIme, date });
             }
         }
         handleLocation();
@@ -40,29 +47,34 @@ function LocationPicker({ onPickLocation }) {
         navigation.navigate('Map', pickedLocation ? {
             initialLat: pickedLocation.lat,
             initialLng: pickedLocation.lng,
+            initialZoomLevel: pickedLocation.zoomLevel,
             showHeaderButton: true
         } : undefined);
     }
 
     let locationPreview = <Text>Dodajte Pvác.</Text>;
 
+
     if (pickedLocation) {
         locationPreview = (
-            <Image
+            <AsyncImage
                 style={styles.image}
                 source={{
-                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng),
+                    uri: getMapPreview(pickedLocation.lat, pickedLocation.lng, pickedLocation.zoomLevel),
                 }}
+                placeholderSource={require('../../assets/loading.gif')}
+                loaded={false}
             />
         );
     }
 
     return (
         <View>
-            <View style={styles.mapPreview}>{locationPreview}</View>
+            <View style={styles.mapPreview}>
+                {locationPreview}</View>
             <View style={styles.actions}>
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>
-                    Pvác na mapi
+                    Izberi Pvác
                 </OutlinedButton>
             </View>
         </View>
@@ -90,6 +102,6 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
-        // borderRadius: 4
+        borderRadius: 4
     },
 });

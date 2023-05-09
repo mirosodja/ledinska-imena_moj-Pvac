@@ -7,16 +7,15 @@ import { fetchPlaceDetails, deletePlace } from '../util/database';
 
 function PlaceDetails({ route, navigation }) {
     const [fetchedPlace, setFetchedPlace] = useState();
+    const selectedPlaceId = route.params.placeId;
 
     function showOnMapHandler() {
         navigation.navigate('Map', {
             initialLat: fetchedPlace.location.lat,
             initialLng: fetchedPlace.location.lng,
-            showHeaderButton: false,
+            initialZoomLevel: fetchedPlace.location.zoomLevel,
         });
     }
-
-    const selectedPlaceId = route.params.placeId;
 
     useEffect(() => {
         async function loadPlaceData() {
@@ -37,7 +36,7 @@ function PlaceDetails({ route, navigation }) {
             </View>
         );
     }
-    //TODO go to main page after delete
+    
     function deletePlaceHandler() {
         Alert.alert(
             'Izbriši zapis',
@@ -52,6 +51,7 @@ function PlaceDetails({ route, navigation }) {
                     onPress: () => {
                         deletePlace(selectedPlaceId)
                             .then(() => {
+                                navigation.navigate('AllPlaces');
                                 Alert.alert('Izbrisano', 'Zapis je izbrisan.');
                             })
                             .catch((error) => {
@@ -63,7 +63,7 @@ function PlaceDetails({ route, navigation }) {
             { cancelable: false },
         );
     }
-
+//TODO: add date and place old name
     return (
         <ScrollView>
             <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
