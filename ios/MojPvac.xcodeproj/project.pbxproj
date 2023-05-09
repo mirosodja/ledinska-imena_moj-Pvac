@@ -11,10 +11,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		4BD9A765B51740189568BCED /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44295A6C230492D8216236E /* noop-file.swift */; };
 		96905EF65AED1B983A6B3ABC /* libPods-MojPvac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-MojPvac.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		F6C8FC2ECF484BA29F04FB95 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5841682A8EB44F369464659B /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,13 +25,13 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MojPvac/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MojPvac/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MojPvac/main.m; sourceTree = "<group>"; };
-		5841682A8EB44F369464659B /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "MojPvac/noop-file.swift"; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-MojPvac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MojPvac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C2E3173556A471DD304B334 /* Pods-MojPvac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MojPvac.debug.xcconfig"; path = "Target Support Files/Pods-MojPvac/Pods-MojPvac.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-MojPvac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MojPvac.release.xcconfig"; path = "Target Support Files/Pods-MojPvac/Pods-MojPvac.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = MojPvac/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F44295A6C230492D8216236E /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "MojPvac/noop-file.swift"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MojPvac/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +58,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				5841682A8EB44F369464659B /* noop-file.swift */,
+				F44295A6C230492D8216236E /* noop-file.swift */,
 			);
 			name = MojPvac;
 			sourceTree = "<group>";
@@ -157,7 +157,7 @@
 			);
 			name = MojPvac;
 			packageProductDependencies = (
-				501E287D1ACC5CDBA14CFEF1 /* Mapbox */,
+				EAF57EE53747E9EC36176FC6 /* Mapbox */,
 			);
 			productName = MojPvac;
 			productReference = 13B07F961A680F5B00A75B9A /* MojPvac.app */;
@@ -186,7 +186,7 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				FF8251717CE2E2802716A5E6 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */,
+				2778B0E70C04AC0834C52EE4 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -296,7 +296,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				F6C8FC2ECF484BA29F04FB95 /* noop-file.swift in Sources */,
+				4BD9A765B51740189568BCED /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,7 +494,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FF8251717CE2E2802716A5E6 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
+		2778B0E70C04AC0834C52EE4 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/maplibre/maplibre-gl-native-distribution";
 			requirement = {
@@ -505,9 +505,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		501E287D1ACC5CDBA14CFEF1 /* Mapbox */ = {
+		EAF57EE53747E9EC36176FC6 /* Mapbox */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF8251717CE2E2802716A5E6 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			package = 2778B0E70C04AC0834C52EE4 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
 			productName = Mapbox;
 		};
 /* End XCSwiftPackageProductDependency section */
