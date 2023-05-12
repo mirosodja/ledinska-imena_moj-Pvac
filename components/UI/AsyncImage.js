@@ -1,4 +1,4 @@
-import React, {
+import {
   useState
 } from 'react';
 
@@ -14,6 +14,10 @@ export default function AsyncImage(props) {
   const style = props.style;
   const source = props.source;
 
+  const onLoadHandler = () => {
+    setLoaded(true);
+  }
+
   return (
     <View
       style={style}>
@@ -28,7 +32,7 @@ export default function AsyncImage(props) {
             resizeMode: 'contain'
           }
         ]}
-        onLoad={() => setLoaded(true)}
+        onLoad={onLoadHandler}
       />
 
       {!loaded &&
