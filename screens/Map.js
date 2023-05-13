@@ -72,9 +72,8 @@ function Map({ navigation, route }) {
             setCurrentLocation(null);
         }, 3000);
         if (mapRef.current) {
-            mapRef.current.setCamera({
-                centerCoordinate: [locationGps.coords.longitude, locationGps.coords.latitude], zoomLevel: currentZoomLevel
-            });
+            // move camera to current location
+            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 3000);
         }
         setIsLoading(false);
     };
