@@ -24,21 +24,30 @@ export async function getAddress(lat, lng) {
     return address;
 }
 
-//TODO url has been changed, update to new url
-export async function getLedinskoIme(lat, lng) {
-    const url = `https://api.mapbox.com/v4/miro-sodja.ledinska-imena-slo-tiles/tilequery/${lng},${lat}.json?radius=300&limit=1&dedupe&access_token=${MAP_BOX_TOKEN}`;
-    // send http request and wait for response. If success return address, otherwise return error
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error('Napaka pri iskanju naslova!');
+async function getLedinskoIme(lng, lat) {
+    const featureTypes = ['point', 'line'];
+    let minDistance = Infinity;
+    let nearestFeature = null;
+
+    for (let featureType of featureTypes) {
+        const url = `https://api.mapbox.com/v4/miro-sodja.ledinska-imena-${featureType}-tiles/tilequery/${lng},${lat}.json?radius=300&limit=1&dedupe&access_token=${MAP_BOX_TOKEN}`;
+        
+        const response = await fetch(url);
+        
+        if (response.data.features.length > 0) {
+            const feature = response.data.features[0];
+            const distance = feature.properties.tilequery.distance;
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestFeature = feature;
+            }
+        }
     }
-    const data = await response.json();
-    if (!data) {
-        throw new Error('Nekaj je šlo narobe, ni podatkov!');
-    }
-    if (data.features.length === 0) {
+
+    if (nearestFeature) {
+        return nearestFeature.properties.name_dialect;
+    } else {
         return 'Pvác nima ledinskega imena';
     }
-    const ledinskoIme = data.features[0].properties.name_dialect;
-    return ledinskoIme;
 }
