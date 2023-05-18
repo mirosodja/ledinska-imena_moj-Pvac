@@ -22,7 +22,7 @@ function Map({ navigation, route }) {
     };
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [currentLocation, setCurrentLocation] = useState(null);
-    const [currentZoomLevel, setCurrentZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 14);
+    const [currentZoomLevel, setCurrentZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 8.1);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
@@ -30,9 +30,9 @@ function Map({ navigation, route }) {
 
     const region = {
         // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
-        latitude: initialLocation ? initialLocation.lat : 46.2949265,
-        longitude: initialLocation ? initialLocation.lng : 13.9140825,
-        zoomLevel: initialLocation ? initialLocation.zoomLevel : 14,
+        latitude: initialLocation ? initialLocation.lat : 46.355280,
+        longitude: initialLocation ? initialLocation.lng : 14.188080,
+        zoomLevel: initialLocation ? initialLocation.zoomLevel : 8.1,
     };
 
     useEffect(() => {
