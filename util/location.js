@@ -24,6 +24,7 @@ export async function getAddress(lat, lng) {
     return address;
 }
 
+//TODO url has been changed, update to new url
 export async function getLedinskoIme(lat, lng) {
     const url = `https://api.mapbox.com/v4/miro-sodja.ledinska-imena-slo-tiles/tilequery/${lng},${lat}.json?radius=300&limit=1&dedupe&access_token=${MAP_BOX_TOKEN}`;
     // send http request and wait for response. If success return address, otherwise return error

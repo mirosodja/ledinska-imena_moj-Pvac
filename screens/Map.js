@@ -120,13 +120,15 @@ function Map({ navigation, route }) {
 
 
     return (
-        <>
+        <View style={styles.container}>
             {isOffline && (<View style={styles.fallbackContainer}><Text style={styles.fallbackText}>Ni internetne povezave! Zemljevida ni mogoče prikazati!</Text></View>)}
-            {isLoading && !isOffline && (<ActivityIndicator size="large" color="#0000ff" />)}
+            {isLoading && !isOffline && (<View style={styles.banner}><ActivityIndicator size="large" color="#0000ff" /></View>)}
             {!isOffline && (
                 <MapLibreGL.MapView
                     style={styles.map}
                     logoEnabled={false}
+                    attributionEnabled={true}
+                    attributionPosition={{ top: 8, left: 8 }}
                     styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
                     onPress={selectLocationHandler}
                     onRegionDidChange={handleRegionDidChange}
@@ -147,13 +149,17 @@ function Map({ navigation, route }) {
                     )}
                 </MapLibreGL.MapView>
             )}
-        </>
+        </View>
     );
 }
 
 export default Map;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.primary100,
+    },
     map: {
         flex: 1,
     },
@@ -173,5 +179,16 @@ const styles = StyleSheet.create({
         color: Colors.alert,
         textAlign: 'center',
         marginBottom: 12,
+    },
+    banner: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: Colors.primary50,
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 2,
     },
 });
