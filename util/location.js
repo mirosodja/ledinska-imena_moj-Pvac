@@ -1,15 +1,15 @@
-//TODO: move mapbox token to .env file
-import { MAP_BOX_TOKEN } from '../mapbox/key.js';
+import Constants from 'expo-constants';
+const mapboxToken = Constants.manifest.extra.mapboxToken;
 
 export function getMapPreview(lat, lng, zoomLevel = 14) {
 
-    const imagePreviewUrl = `https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4/static/pin-s+000(${lng},${lat})/${lng},${lat},${zoomLevel},0/400x200?access_token=${MAP_BOX_TOKEN}`;
+    const imagePreviewUrl = `https://api.mapbox.com/styles/v1/miro-sodja/clfwhbge3009401mztl3f09x4/static/pin-s+000(${lng},${lat})/${lng},${lat},${zoomLevel},0/400x200?access_token=${mapboxToken}`;
 
     return imagePreviewUrl;
 }
 
 export async function getAddress(lat, lng) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAP_BOX_TOKEN}`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}`;
     // send http request and wait for response. If success return address, otherwise return error
     const response = await fetch(url);
     if (!response.ok) {
@@ -30,7 +30,7 @@ export async function getLedinskoIme(lat, lng) {
     let nearestFeature = null;
 
     for (let featureType of featureTypes) {
-        const url = `https://api.mapbox.com/v4/miro-sodja.ledinska-imena-${featureType}-tiles/tilequery/${lng},${lat}.json?radius=300&limit=1&dedupe&access_token=${MAP_BOX_TOKEN}`;
+        const url = `https://api.mapbox.com/v4/miro-sodja.ledinska-imena-${featureType}-tiles/tilequery/${lng},${lat}.json?radius=300&limit=1&dedupe&access_token=${mapboxToken}`;
 
         const response = await fetch(url);
         if (!response.ok) {

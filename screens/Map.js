@@ -4,13 +4,13 @@ import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
-import { MAP_BOX_TOKEN } from '../mapbox/key.js';
-
+import Constants from 'expo-constants';
 
 import IconButton from "../components/UI/IconButton";
 
 // set MapLibreGL to mapbox tile server
-MapLibreGL.setAccessToken(MAP_BOX_TOKEN);
+const mapboxToken = Constants.manifest.extra.mapboxToken;
+MapLibreGL.setAccessToken(mapboxToken);
 
 
 function Map({ navigation, route }) {
