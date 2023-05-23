@@ -1,5 +1,5 @@
 # Application Overview
-This is a mobile application built using React Native and Expo framework. The main purpose of this application is for users to save the locations they have visited and share it with others.
+Moj Pvac is a mobile application built using React Native and Expo framework. The main purpose of this application is for users to save the locations they have visited.
 
 ## Features
 * User can save a place with a name, description, and image.
