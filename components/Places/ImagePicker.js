@@ -45,7 +45,7 @@ function ImagePicker({ onTakeImage }) {
         }
     }
 
-    let imagePreview = <Text>Izberite sliko.</Text>;
+    let imagePreview = <Text>Slika s Pváca</Text>;
     if (pickedImage) {
         imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
     }
@@ -55,7 +55,9 @@ function ImagePicker({ onTakeImage }) {
             <View style={styles.imagePreview}>
                 {imagePreview}
             </View>
-            <OutlinedButton icon="camera" onPress={takeImageHandler}>Slikaj Pvác</OutlinedButton>
+            <View style={styles.actions}>
+                <OutlinedButton icon="camera" onPress={takeImageHandler}>Slikaj Pvác</OutlinedButton>
+            </View>
         </View>);
 
 }
@@ -72,6 +74,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary100,
         borderRadius: 4,
         overflow: 'hidden',
+    },
+    actions: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
     image: {
         width: '100%',

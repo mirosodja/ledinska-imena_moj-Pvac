@@ -43,6 +43,7 @@ function PlaceForm({ onCreatePlace }) {
                     style={styles.input}
                     onChangeText={changeTitleHandler}
                     value={enteredTitle}
+                    placeholder="Vnesi vzdevek"
                 />
             </View>
             <ImagePicker onTakeImage={takeImageHandler} />
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
     input: {
         marginVertical: 8,
         paddingHorizontal: 4,
-        paddingVertical: 8,
-        fontSize: 16,
+        paddingVertical: 10,
+        fontSize: 18,
         borderBottomColor: Colors.primary700,
         borderBottomWidth: 2,
         backgroundColor: Colors.primary100,

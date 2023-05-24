@@ -62,54 +62,62 @@ export default function App() {
     <>
       <StatusBar style="dark" />
       <SafeAreaView style={{ flex: 1 }}>
-      <NavigationContainer onReady={onLayoutRootView}>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: Colors.primary500 },
-            headerTintColor: Colors.gray700,
-            contentStyle: { backgroundColor: Colors.gray700 }
-          }}
-        >
-          <Stack.Screen
-            name="AllPlaces"
-            component={AllPlaces}
-            options={({ navigation }) => ({
-              title: `Moj Pvác`,
-              headerRight: ({ tintColor }) => (
-                <>
-                  <IconButton
-                    icon="add"
-                    size={24}
-                    color={tintColor}
-                    onPress={() => navigation.navigate('AddPlace')}
-                  />
-                  <IconButton
-                    icon="information"
-                    size={24}
-                    color={tintColor}
-                    onPress={() => navigation.navigate('Info')}
-                  />
-                </>
-              ),
-            })}
-          />
-          <Stack.Screen
-            name="AddPlace"
-            component={AddPlace}
-            options={{
-              title: 'Dodaj Pvác',
+        <NavigationContainer onReady={onLayoutRootView}>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: Colors.primary500 },
+              headerTintColor: Colors.gray700,
+              contentStyle: { backgroundColor: Colors.gray700 }
             }}
-          />
-          <Stack.Screen name="Map" component={Map} />
-          <Stack.Screen name="PlaceDetails"
-            component={PlaceDetails}
-            options={{
-              title: 'Podrobnosti o Pvácu'
-            }}
-          />
-          <Stack.Screen name="Info" component={Info} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="AllPlaces"
+              component={AllPlaces}
+              options={({ navigation }) => ({
+                title: `Moj Pvác`,
+                headerRight: ({ tintColor }) => (
+                  <>
+                    <IconButton
+                      icon="add"
+                      size={28}
+                      color={tintColor}
+                      onPress={() => navigation.navigate('AddPlace')}
+                    />
+                    <IconButton
+                      icon="information"
+                      size={28}
+                      color={tintColor}
+                      onPress={() => navigation.navigate('Info')}
+                    />
+                  </>
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="AddPlace"
+              component={AddPlace}
+              options={{
+                title: 'Dodaj Pvác',
+              }}
+            />
+            <Stack.Screen name="Map"
+              component={Map}
+              options={{
+                title: 'Pvác na zemljevidu'
+              }}
+            />
+            <Stack.Screen name="PlaceDetails"
+              component={PlaceDetails}
+              options={{
+                title: 'Podrobnosti o Pvácu'
+              }}
+            />
+            <Stack.Screen name="Info"
+              component={Info}
+              options={{ title: 'Info' }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </SafeAreaView>
     </>
   );

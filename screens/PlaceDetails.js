@@ -10,11 +10,12 @@ function PlaceDetails({ route, navigation }) {
     const selectedPlaceId = route.params.placeId;
 
     function showOnMapHandler() {
-        navigation.navigate('Map', {
-            initialLat: fetchedPlace.location.lat,
-            initialLng: fetchedPlace.location.lng,
-            initialZoomLevel: fetchedPlace.location.zoomLevel,
-        });
+        navigation.navigate('Map',
+            {
+                initialLat: fetchedPlace.location.lat,
+                initialLng: fetchedPlace.location.lng,
+                initialZoomLevel: fetchedPlace.location.zoomLevel,
+            });
     }
 
     useEffect(() => {
@@ -73,7 +74,7 @@ function PlaceDetails({ route, navigation }) {
                     <Text style={styles.ledinskoIme}>{fetchedPlace.ledinskoIme}</Text>
                 </View>
                 <OutlinedButton icon="map" onPress={showOnMapHandler}>
-                    Pvác na mapi
+                    Pvác na zemljevidu
                 </OutlinedButton>
                 <OutlinedButton icon="trash" onPress={deletePlaceHandler}>
                     Izbriši

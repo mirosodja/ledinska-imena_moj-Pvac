@@ -4,12 +4,14 @@ import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
-import Constants from 'expo-constants';
-
 import IconButton from "../components/UI/IconButton";
 
 // set MapLibreGL to mapbox tile server
-const mapboxToken = Constants.manifest.extra.mapboxToken;
+//! comment this line when you build the app with eas
+import { mapboxToken } from "../mapbox/mapboxtoken";
+//! uncomment this line when you build the app with eas
+// import Constants from 'expo-constants';
+// const mapboxToken = Constants.manifest.extra.mapboxToken;
 MapLibreGL.setAccessToken(mapboxToken);
 
 
@@ -44,8 +46,16 @@ function Map({ navigation, route }) {
     }, []);
 
     const handleRegionDidChange = async (event) => {
-        const newZoomLevel = event.properties.zoomLevel;
-        setCurrentZoomLevel(newZoomLevel);
+        let newZoomLevel = null;
+        if (mapRef.current) {
+            newZoomLevel = mapRef.current.zoomLevel;
+        }
+        else {
+            newZoomLevel = event.properties.zoomLevel;
+        }
+        if (newZoomLevel) {
+            setCurrentZoomLevel(newZoomLevel);
+        }
         setIsLoading(false);
     };
 
@@ -72,7 +82,10 @@ function Map({ navigation, route }) {
             setCurrentLocation(null);
         }, 3000);
         if (mapRef.current) {
-            // move camera to current location
+            if (currentZoomLevel < 16) {
+                const newZoomLevel = (currentZoomLevel + 16) / 2;
+                mapRef.current.zoomLevel = newZoomLevel;
+            }
             mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 3000);
         }
         setIsLoading(false);
@@ -103,13 +116,13 @@ function Map({ navigation, route }) {
                 <>
                     <IconButton
                         icon="save"
-                        size={24}
+                        size={28}
                         color={tintColor}
                         onPress={savedPickedLocationHandler}
                     />
                     <IconButton
                         icon="location"
-                        size={24}
+                        size={28}
                         color={tintColor}
                         onPress={getLocationHandler}
                     />
