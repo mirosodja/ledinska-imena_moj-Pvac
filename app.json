@@ -18,7 +18,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.1",
       "supportsTablet": false,
       "bundleIdentifier": "in.potep.ledinskaimena",
       "entitlements": {
