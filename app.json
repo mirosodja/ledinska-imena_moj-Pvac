@@ -18,7 +18,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.1.0",
       "supportsTablet": false,
       "bundleIdentifier": "in.potep.ledinskaimena",
       "entitlements": {
@@ -26,7 +26,7 @@
       }
     },
     "android": {
-      "versionCode": 1,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -41,7 +41,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.VIBRATE",
-        "android.permission.WRITE_EXTERNAL_STORAGE"
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "com.google.android.gms.permission.AD_ID"
       ],
       "package": "in.potep.ledinskaimena"
     },
@@ -74,7 +75,10 @@
             "compileSdkVersion": 31,
             "targetSdkVersion": 31,
             "buildToolsVersion": "31.0.0",
-            "minSDKVersion": 21
+            "minSDKVersion": 21,
+            "enableProguardInReleaseBuilds": true,
+            "extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
+            "allowBackup": false
           },
           "ios": {
             "deploymentTarget": "13.0"

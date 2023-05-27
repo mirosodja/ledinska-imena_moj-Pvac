@@ -1,6 +1,6 @@
-//! comment this line when you build the app with eas
+//TODO comment this line when you build the app with eas
 import { mapboxToken } from "../mapbox/mapboxtoken";
-//! uncomment this line when you build the app with eas
+//TODO uncomment this line when you build the app with eas
 // import Constants from 'expo-constants';
 // const mapboxToken = Constants.manifest.extra.mapboxToken;
 
