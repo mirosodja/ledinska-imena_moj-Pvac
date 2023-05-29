@@ -21,10 +21,10 @@ Moj Pvac is a mobile application built using React Native and Expo framework. Th
 * `@react-native-community/netinfo`
 * `sqllite`
 ## Getting Started
-1. Install Expo CLI `npm install -g expo-cli`.
+1. Expo CLI has to be installed while project is expo bare workflow https://docs.expo.dev/archive/managed-vs-bare/.
 2. Clone or download the repository.
 3. Navigate to the project's directory and run `npm install`.
-4. Run `expo start` to start the development server.
+4. Run `npm run android` to start the development server.
 5. Open the application on an emulator or a physical device using the Expo App.
 ## Technologies Used
 * React Native
