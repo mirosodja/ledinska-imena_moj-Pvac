@@ -29,7 +29,12 @@ Moj Pvac is a mobile application built using React Native and Expo framework. Th
 ## Technologies Used
 * React Native
 * Expo
-* MapLibreGL
+* MapLibreGL (mapboxToken is imported from ./mapbox/mapboxtoken.js but file is ignored by git)
 * SQLite
 ## Conclusion
 This application provides an easy way for users to save places they have visited. It provides functionalities that allow the user to search for a place using the map and add it as a new place. It also provides a simple user interface with different screens to navigate through the application.
+## License
+
+The content of this repository is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+This means you are free to use, share, and adapt the content in this repository, including the data sourced from the [Flu-Led – ledinskaimena.si](https://www.flurnamen.at/prenos/), as long as you provide appropriate attribution to the original creator.
