@@ -47,6 +47,17 @@ function Map({ navigation, route }) {
     }, []);
 
     const handleRegionDidChange = async (event) => {
+
+        let newZoomLevel = null;
+        if (mapRef.current) {
+            newZoomLevel = mapRef.current.zoomLevel;
+        }
+        else {
+            newZoomLevel = event.properties.zoomLevel;
+        }
+        if (newZoomLevel) {
+            setCurrentZoomLevel(newZoomLevel);
+        }
         setIsLoading(false);
     };
 
@@ -80,8 +91,6 @@ function Map({ navigation, route }) {
                 zoomLevelRef.current = newZoomLevel;
             }
             mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 3000);
-            // mapRef.current.zoomLevel = newZoomLevel;
-            console.log("mapRef.current.zoomLevel", mapRef.current.defaultCamera);
         }
         setIsLoading(false);
     };
