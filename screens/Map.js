@@ -28,6 +28,7 @@ function Map({ navigation, route }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
+    const zoomLevelRef = useRef(currentZoomLevel);
 
 
     const region = {
@@ -46,16 +47,6 @@ function Map({ navigation, route }) {
     }, []);
 
     const handleRegionDidChange = async (event) => {
-        let newZoomLevel = null;
-        if (mapRef.current) {
-            newZoomLevel = mapRef.current.zoomLevel;
-        }
-        else {
-            newZoomLevel = event.properties.zoomLevel;
-        }
-        if (newZoomLevel) {
-            setCurrentZoomLevel(newZoomLevel);
-        }
         setIsLoading(false);
     };
 
@@ -82,11 +73,15 @@ function Map({ navigation, route }) {
             setCurrentLocation(null);
         }, 3000);
         if (mapRef.current) {
+            let newZoomLevel = zoomLevelRef.current;
             if (currentZoomLevel < 16) {
-                const newZoomLevel = (currentZoomLevel + 16) / 2;
-                mapRef.current.zoomLevel = newZoomLevel;
+                newZoomLevel = (zoomLevelRef.current + 16) / 2;
+                setCurrentZoomLevel(newZoomLevel);
+                zoomLevelRef.current = newZoomLevel;
             }
             mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 3000);
+            // mapRef.current.zoomLevel = newZoomLevel;
+            console.log("mapRef.current.zoomLevel", mapRef.current.defaultCamera);
         }
         setIsLoading(false);
     };
@@ -112,36 +107,44 @@ function Map({ navigation, route }) {
             return;
         }
         else {
-            navigation.setOptions({
-                headerRight: ({ tintColor }) => (
-                    <>
+            navigation.setOptions(
+                {
+                    headerLeft: ({ tintColor }) => (
                         <IconButton
-                            icon="list"
+                            icon="arrow-back"
                             size={28}
                             color={tintColor}
                             onPress={() => navigation.navigate('AllPlaces')}
-                        />
-                        <IconButton
-                            icon="save"
-                            size={28}
-                            color={tintColor}
-                            onPress={savedPickedLocationHandler}
-                        />
-                        <IconButton
-                            icon="location"
-                            size={28}
-                            color={tintColor}
-                            onPress={getLocationHandler}
-                        />
-                        <IconButton
-                            icon="information"
-                            size={28}
-                            color={tintColor}
-                            onPress={() => navigation.navigate('Info')}
-                        />
-                    </>
-                ),
-            });
+                        />),
+                    headerRight: ({ tintColor }) => (
+                        <>
+                            <IconButton
+                                icon="list"
+                                size={28}
+                                color={tintColor}
+                                onPress={() => navigation.navigate('AllPlaces')}
+                            />
+                            <IconButton
+                                icon="save"
+                                size={28}
+                                color={tintColor}
+                                onPress={savedPickedLocationHandler}
+                            />
+                            <IconButton
+                                icon="location"
+                                size={28}
+                                color={tintColor}
+                                onPress={getLocationHandler}
+                            />
+                            <IconButton
+                                icon="information"
+                                size={28}
+                                color={tintColor}
+                                onPress={() => navigation.navigate('Info')}
+                            />
+                        </>
+                    ),
+                });
         }
     }, [navigation, savedPickedLocationHandler]);
 
