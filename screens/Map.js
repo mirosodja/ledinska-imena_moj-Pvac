@@ -111,24 +111,38 @@ function Map({ navigation, route }) {
         if (route.params && !route.params.showHeaderButton) {
             return;
         }
-        navigation.setOptions({
-            headerRight: ({ tintColor }) => (
-                <>
-                    <IconButton
-                        icon="save"
-                        size={28}
-                        color={tintColor}
-                        onPress={savedPickedLocationHandler}
-                    />
-                    <IconButton
-                        icon="location"
-                        size={28}
-                        color={tintColor}
-                        onPress={getLocationHandler}
-                    />
-                </>
-            ),
-        });
+        else {
+            navigation.setOptions({
+                headerRight: ({ tintColor }) => (
+                    <>
+                        <IconButton
+                            icon="list"
+                            size={28}
+                            color={tintColor}
+                            onPress={() => navigation.navigate('AllPlaces')}
+                        />
+                        <IconButton
+                            icon="save"
+                            size={28}
+                            color={tintColor}
+                            onPress={savedPickedLocationHandler}
+                        />
+                        <IconButton
+                            icon="location"
+                            size={28}
+                            color={tintColor}
+                            onPress={getLocationHandler}
+                        />
+                        <IconButton
+                            icon="information"
+                            size={28}
+                            color={tintColor}
+                            onPress={() => navigation.navigate('Info')}
+                        />
+                    </>
+                ),
+            });
+        }
     }, [navigation, savedPickedLocationHandler]);
 
 

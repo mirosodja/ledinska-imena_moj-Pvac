@@ -70,11 +70,18 @@ export default function App() {
               contentStyle: { backgroundColor: Colors.gray700 }
             }}
           >
+            <Stack.Screen name="Map"
+              component={Map}
+              options={{
+                title: 'Moj Pvác',
+              }
+              }
+            />
             <Stack.Screen
               name="AllPlaces"
               component={AllPlaces}
               options={({ navigation }) => ({
-                title: `Moj Pvác`,
+                title: `Seznam mojih Pvácov`,
                 headerRight: ({ tintColor }) => (
                   <>
                     <IconButton
@@ -82,12 +89,6 @@ export default function App() {
                       size={28}
                       color={tintColor}
                       onPress={() => navigation.navigate('AddPlace')}
-                    />
-                    <IconButton
-                      icon="information"
-                      size={28}
-                      color={tintColor}
-                      onPress={() => navigation.navigate('Info')}
                     />
                   </>
                 ),
@@ -100,12 +101,6 @@ export default function App() {
                 title: 'Dodaj Pvác',
               }}
             />
-            <Stack.Screen name="Map"
-              component={Map}
-              options={{
-                title: 'Pvác na zemljevidu'
-              }}
-            />
             <Stack.Screen name="PlaceDetails"
               component={PlaceDetails}
               options={{
@@ -114,7 +109,9 @@ export default function App() {
             />
             <Stack.Screen name="Info"
               component={Info}
-              options={{ title: 'Info' }}
+              options={{
+                title: 'Info'
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>

@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/colors';
 
 function Help() {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.textTitle}>Moj Pvác - Ledinska imena</Text>
             <Text style={styles.text}>Ledinska imena so del jezikovno-kulturnega izročila prostora, v katerem ljudje živijo in delajo. Izvirajo iz naravnih danosti ali človekove dejavnosti v prostoru, ljudem pa služijo za orientacijo v domačem delovnem okolju.</Text>
             <Text style={styles.text}>Ledinska imena so v Sloveniji zelo razširjena, saj je bila tudi narečna raznolikost zelo velika. Vsa ta raznolikost se odraža tudi v poimenovanju krajev.</Text>
@@ -11,7 +11,7 @@ function Help() {
             <Text style={styles.textLicense}>CC-BY-4.0: Flu-Led – ledinskaimena.si</Text>
             <Text style={styles.text}>Podatki v Sloveniji so za občine na severozahodu na Gorenjskem in sicer za naslednje občine: Bohinj, Bovec, Gorje, Jesenice, Jezersko, Kranj, Kranjska gora, Radovljica, Tržič in Žirovnica.</Text>
             <Text style={styles.text}>Podatki v Avstriji so za občine na jugu Koroške in sicer za naslednje občine: Bekštanj/Finkenstein, Beljak/Villach, Bilčovs/Ludmannsdorf, Bistrica v R./Feistritz i.R., Borovlje/Ferlach, Celovec/Klagenfurt, Galicija/Gallizien, Grabštanj/Grafenstein, Hodiše ob jezeru/Keutschach, Kotmara vas/Köttmannsdorf, Podkloster/Arnoldstein, Rožek/Rosegg, Sele/Zell, Šentjakob v R./ St. Jakob i..R., Škofiče/Schiefling, Šmarjeta v R./ St. Margareten i.R., Vrba/Velden, Železna Kapla/Bad Eisenkappel, Žihpolje/Maria Rain in Žrelec/Ebenthal.</Text>
-        </View>
+        </ScrollView>
     );
 }
 

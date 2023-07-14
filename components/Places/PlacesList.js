@@ -16,11 +16,7 @@ function PlacesList({ places }) {
         return (
             <View style={styles.fallbackContainer}>
                 <Text style={styles.fallbackText}>
-                    Moj Pvác prikazuje ledinska imena, kot so jim včasih rekli.
-                    Mogoče bi kakšno dodali tako, da tapnete na plus zgoraj?
-                </Text>
-                <Text style={styles.fallbackText}>
-                    Več o ledinskih imenih pa si lahko ogledate tako, da tapnete na 'i'?
+                    V 'Moj Pvác' lahko dodate seznam obiskanih krajev z ledinskimi imeni tako, da tapnete na plus v naslovni vrstici.
                 </Text>
             </View>);
     }
