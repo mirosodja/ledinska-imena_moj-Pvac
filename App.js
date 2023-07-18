@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { StatusBar } from 'expo-status-bar';
+import MapHome from './screens/MapHome';
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import PlaceDetails from './screens/PlaceDetails';
@@ -70,18 +71,18 @@ export default function App() {
               contentStyle: { backgroundColor: Colors.gray700 }
             }}
           >
-            <Stack.Screen name="Map"
-              component={Map}
-              options={{
+            <Stack.Screen
+              name='MapHome'
+              component={MapHome}
+              options={({ navigation }) => ({
                 title: 'Moj Pvác',
-              }
-              }
+              })}
             />
             <Stack.Screen
               name="AllPlaces"
               component={AllPlaces}
               options={({ navigation }) => ({
-                title: `Seznam mojih Pvácov`,
+                title: 'Vsi Pváci',
                 headerRight: ({ tintColor }) => (
                   <>
                     <IconButton
@@ -97,15 +98,22 @@ export default function App() {
             <Stack.Screen
               name="AddPlace"
               component={AddPlace}
-              options={{
+              options={({
                 title: 'Dodaj Pvác',
-              }}
+              })}
             />
             <Stack.Screen name="PlaceDetails"
               component={PlaceDetails}
               options={{
                 title: 'Podrobnosti o Pvácu'
               }}
+            />
+            <Stack.Screen name="Map"
+              component={Map}
+              options={{
+                title: 'Moj Pvác na zemljevidu',
+              }
+              }
             />
             <Stack.Screen name="Info"
               component={Info}

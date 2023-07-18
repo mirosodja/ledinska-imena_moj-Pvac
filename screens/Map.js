@@ -22,17 +22,17 @@ function Map({ navigation, route }) {
         lng: route.params.initialLng,
         zoomLevel: route.params.initialZoomLevel,
     };
+    // initialLocation show on map only if showHeaderButton is true
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [currentZoomLevel, setCurrentZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 8.1);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
-    const zoomLevelRef = useRef(currentZoomLevel);
-
 
     const region = {
         // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
+
         latitude: initialLocation ? initialLocation.lat : 46.355280,
         longitude: initialLocation ? initialLocation.lng : 14.188080,
         zoomLevel: initialLocation ? initialLocation.zoomLevel : 8.1,
@@ -50,12 +50,7 @@ function Map({ navigation, route }) {
 
         let newZoomLevel = null;
         if (mapRef.current) {
-            newZoomLevel = mapRef.current.zoomLevel;
-        }
-        else {
             newZoomLevel = event.properties.zoomLevel;
-        }
-        if (newZoomLevel) {
             setCurrentZoomLevel(newZoomLevel);
         }
         setIsLoading(false);
@@ -84,15 +79,8 @@ function Map({ navigation, route }) {
             setCurrentLocation(null);
         }, 3000);
         if (mapRef.current) {
-            let newZoomLevel = zoomLevelRef.current;
-            if (currentZoomLevel < 16) {
-                newZoomLevel = (zoomLevelRef.current + 16) / 2;
-                setCurrentZoomLevel(newZoomLevel);
-                zoomLevelRef.current = newZoomLevel;
-            }
-            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 3000);
+            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
         }
-        setIsLoading(false);
     };
 
     const savedPickedLocationHandler = useCallback(() => {
@@ -112,27 +100,29 @@ function Map({ navigation, route }) {
     }, [navigation, selectedLocation]);
 
     useLayoutEffect(() => {
-        if (route.params && !route.params.showHeaderButton) {
+        if (route.params && route.params.showHeaderButton) {
             return;
+        }
+        else if (route.params && route.params.showGeolocationButton) {
+            navigation.setOptions(
+                {
+                    headerRight: ({ tintColor }) => (
+                        <>
+                            <IconButton
+                                icon="location"
+                                size={28}
+                                color={tintColor}
+                                onPress={getLocationHandler}
+                            />
+                        </>
+                    ),
+                });
         }
         else {
             navigation.setOptions(
                 {
-                    headerLeft: ({ tintColor }) => (
-                        <IconButton
-                            icon="arrow-back"
-                            size={28}
-                            color={tintColor}
-                            onPress={() => navigation.navigate('AllPlaces')}
-                        />),
                     headerRight: ({ tintColor }) => (
                         <>
-                            <IconButton
-                                icon="list"
-                                size={28}
-                                color={tintColor}
-                                onPress={() => navigation.navigate('AllPlaces')}
-                            />
                             <IconButton
                                 icon="save"
                                 size={28}
@@ -144,12 +134,6 @@ function Map({ navigation, route }) {
                                 size={28}
                                 color={tintColor}
                                 onPress={getLocationHandler}
-                            />
-                            <IconButton
-                                icon="information"
-                                size={28}
-                                color={tintColor}
-                                onPress={() => navigation.navigate('Info')}
                             />
                         </>
                     ),
@@ -180,7 +164,7 @@ function Map({ navigation, route }) {
                         }}
                         ref={mapRef}
                     />
-                    {selectedLocation && (
+                    {route.params && !route.params.showGeolocationButton && selectedLocation && (
                         <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
                     )}
                     {currentLocation && (
