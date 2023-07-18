@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { Alert, StyleSheet, ActivityIndicator, Text, View } from "react-native";
 import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
@@ -17,19 +18,20 @@ MapLibreGL.setAccessToken(mapboxToken);
 
 function MapHome({ navigation }) {
 
+    const region =
+    // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
+    {
+        latitude: 46.355280,
+        longitude: 14.188080,
+        zoomLevel: 8.1
+    };
+
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
-
-    const region = {
-        // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
-
-        latitude: 46.355280,
-        longitude: 14.188080,
-        zoomLevel: 8.1,
-    };
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -38,6 +40,21 @@ function MapHome({ navigation }) {
         });
         return () => removeNetInfoSubscription();
     }, []);
+
+
+    useEffect(() => {
+
+        const moveHome = () => {
+            if (mapRef.current) {
+                mapRef.current.flyTo([14.188080, 46.355280]);
+                mapRef.current.zoomTo(8.1);
+            }
+        }
+
+        if (isFocused) {
+            moveHome();
+        }
+    }, [isFocused]);
 
     const handleRegionDidChange = async (event) => {
         setIsLoading(false);
