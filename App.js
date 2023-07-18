@@ -82,7 +82,7 @@ export default function App() {
               name="AllPlaces"
               component={AllPlaces}
               options={({ navigation }) => ({
-                title: 'Vsi Pváci',
+                title: 'Seznam mojih Pvácov',
                 headerRight: ({ tintColor }) => (
                   <>
                     <IconButton
