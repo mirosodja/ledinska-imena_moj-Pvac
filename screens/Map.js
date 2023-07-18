@@ -101,45 +101,27 @@ function Map({ navigation, route }) {
     }, [navigation, selectedLocation]);
 
     useLayoutEffect(() => {
-        if (route.params && route.params.showHeaderButton) {
+        if (route.params && !route.params.showHeaderButton) {
             return;
         }
-        else if (route.params && route.params.showGeolocationButton) {
-            navigation.setOptions(
-                {
-                    headerRight: ({ tintColor }) => (
-                        <>
-                            <IconButton
-                                icon="location"
-                                size={28}
-                                color={tintColor}
-                                onPress={getLocationHandler}
-                            />
-                        </>
-                    ),
-                });
-        }
-        else {
-            navigation.setOptions(
-                {
-                    headerRight: ({ tintColor }) => (
-                        <>
-                            <IconButton
-                                icon="save"
-                                size={28}
-                                color={tintColor}
-                                onPress={savedPickedLocationHandler}
-                            />
-                            <IconButton
-                                icon="location"
-                                size={28}
-                                color={tintColor}
-                                onPress={getLocationHandler}
-                            />
-                        </>
-                    ),
-                });
-        }
+        navigation.setOptions({
+            headerRight: ({ tintColor }) => (
+                <>
+                    <IconButton
+                        icon="save"
+                        size={28}
+                        color={tintColor}
+                        onPress={savedPickedLocationHandler}
+                    />
+                    <IconButton
+                        icon="location"
+                        size={28}
+                        color={tintColor}
+                        onPress={getLocationHandler}
+                    />
+                </>
+            ),
+        });
     }, [navigation, savedPickedLocationHandler]);
 
 
