@@ -16,7 +16,7 @@ function PlacesList({ places }) {
         return (
             <View style={styles.fallbackContainer}>
                 <Text style={styles.fallbackText}>
-                    V 'Moj Pvác' lahko dodate seznam obiskanih krajev z ledinskimi imeni tako, da tapnete na plus v naslovni vrstici.
+                    V 'Moj Pvác' v5 lahko dodate seznam obiskanih krajev z ledinskimi imeni tako, da tapnete na plus v naslovni vrstici.
                 </Text>
             </View>);
     }

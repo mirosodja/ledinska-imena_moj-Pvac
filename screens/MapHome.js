@@ -1,5 +1,4 @@
 import { useLayoutEffect, useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { useIsFocused } from "@react-navigation/native";
 import { Alert, StyleSheet, ActivityIndicator, Text, View } from "react-native";
 import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
@@ -19,19 +18,16 @@ MapLibreGL.setAccessToken(mapboxToken);
 function MapHome({ navigation }) {
 
     const region =
-    // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
     {
         latitude: 46.355280,
         longitude: 14.188080,
         zoomLevel: 8.1
     };
-
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
     const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
-    const isFocused = useIsFocused();
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -41,20 +37,12 @@ function MapHome({ navigation }) {
         return () => removeNetInfoSubscription();
     }, []);
 
-
-    useEffect(() => {
-
-        const moveHome = () => {
-            if (mapRef.current) {
-                mapRef.current.flyTo([14.188080, 46.355280]);
-                mapRef.current.zoomTo(8.1);
-            }
+    const moveMapHome = (longitude, latitude, zoomLevel) => {
+        if (mapRef.current) {
+            mapRef.current.flyTo([longitude, latitude], 2000);
+            mapRef.current.zoomTo(zoomLevel);
         }
-
-        if (isFocused) {
-            moveHome();
-        }
-    }, [isFocused]);
+    }
 
     const handleRegionDidChange = async (event) => {
         setIsLoading(false);
@@ -76,9 +64,7 @@ function MapHome({ navigation }) {
         setTimeout(() => {
             setCurrentLocation(null);
         }, 3000);
-        if (mapRef.current) {
-            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
-        }
+        mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
     }, [currentLocation]);
 
     useLayoutEffect(() => {
@@ -97,6 +83,12 @@ function MapHome({ navigation }) {
                             size={28}
                             color={tintColor}
                             onPress={getLocationHandler}
+                        />
+                        <IconButton
+                            icon="reload"
+                            size={28}
+                            color={tintColor}
+                            onPress={moveMapHome.bind(this, region.longitude, region.latitude, region.zoomLevel)}
                         />
                         <IconButton
                             icon="information"
