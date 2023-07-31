@@ -25,11 +25,12 @@ function Map({ navigation, route }) {
     // initialLocation show on map only if showHeaderButton is true
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [currentLocation, setCurrentLocation] = useState(null);
-    const [currentZoomLevel, setCurrentZoomLevel] = useState(initialLocation ? initialLocation.zoomLevel : 8.1);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
-    const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
+    const currentZoomLevel = useRef(initialLocation ? initialLocation.zoomLevel : 8.1);
+    const mapRef = useRef(null);
+
 
     const region = {
         // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
@@ -48,11 +49,8 @@ function Map({ navigation, route }) {
     }, []);
 
     const handleRegionDidChange = async (event) => {
-
-        let newZoomLevel = null;
         if (mapRef.current) {
-            newZoomLevel = event.properties.zoomLevel;
-            setCurrentZoomLevel(newZoomLevel);
+            currentZoomLevel.current = event.properties.zoomLevel;
         }
         setIsLoading(false);
     };
@@ -60,7 +58,7 @@ function Map({ navigation, route }) {
     function selectLocationHandler(event) {
         const lat = event.geometry.coordinates[1];
         const lng = event.geometry.coordinates[0];
-        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: currentZoomLevel });
+        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: currentZoomLevel.current });
     }
 
     const getLocationHandler = useCallback(async () => {
@@ -96,7 +94,7 @@ function Map({ navigation, route }) {
         navigation.navigate("AddPlace", {
             pickedLat: selectedLocation.lat,
             pickedLng: selectedLocation.lng,
-            pickedZoomLevel: currentZoomLevel,
+            pickedZoomLevel: currentZoomLevel.current,
         });
     }, [navigation, selectedLocation]);
 
