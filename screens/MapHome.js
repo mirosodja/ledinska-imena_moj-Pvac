@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState, useRef, useEffect, useMemo } from "react";
+import { useLayoutEffect, useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { Alert, StyleSheet, ActivityIndicator, Text, View } from "react-native";
 import * as Location from 'expo-location';
 import MapLibreGL from '@maplibre/maplibre-react-native';
@@ -15,30 +15,19 @@ import { mapboxToken } from "../mapbox/mapboxtoken";
 MapLibreGL.setAccessToken(mapboxToken);
 
 
-function Map({ navigation, route }) {
+function MapHome({ navigation }) {
 
-    const initialLocation = route.params && {
-        lat: route.params.initialLat,
-        lng: route.params.initialLng,
-        zoomLevel: route.params.initialZoomLevel,
+    const region =
+    {
+        latitude: 46.355280,
+        longitude: 14.188080,
+        zoomLevel: 8.1
     };
-    // initialLocation show on map only if showHeaderButton is true
-    const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
-    const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
-    const currentZoomLevel = useRef(initialLocation ? initialLocation.zoomLevel : 8.1);
     const mapRef = useRef(null);
-
-
-    const region = {
-        // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
-
-        latitude: initialLocation ? initialLocation.lat : 46.355280,
-        longitude: initialLocation ? initialLocation.lng : 14.188080,
-        zoomLevel: initialLocation ? initialLocation.zoomLevel : 8.1,
-    };
+    const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -48,18 +37,16 @@ function Map({ navigation, route }) {
         return () => removeNetInfoSubscription();
     }, []);
 
-    const handleRegionDidChange = async (event) => {
+    const moveMapHome = (longitude, latitude, zoomLevel) => {
         if (mapRef.current) {
-            currentZoomLevel.current = event.properties.zoomLevel;
+            mapRef.current.flyTo([longitude, latitude], 2000);
+            mapRef.current.zoomTo(zoomLevel);
         }
+    }
+
+    const handleRegionDidChange = async (event) => {
         setIsLoading(false);
     };
-
-    function selectLocationHandler(event) {
-        const lat = event.geometry.coordinates[1];
-        const lng = event.geometry.coordinates[0];
-        setSelectedLocation({ lat: lat, lng: lng, zoomLevel: currentZoomLevel.current });
-    }
 
     const getLocationHandler = useCallback(async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -77,50 +64,42 @@ function Map({ navigation, route }) {
         setTimeout(() => {
             setCurrentLocation(null);
         }, 3000);
-        if (mapRef.current) {
-            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
-        }
+        mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
     }, [currentLocation]);
 
-    const savedPickedLocationHandler = useCallback(() => {
-        if (!selectedLocation) {
-            Alert.alert(
-                "Niste izbrali Pváca!",
-                "Pvác izberete tako, da tapnete na zemljevid!"
-            );
-            return;
-        }
-
-        navigation.navigate("AddPlace", {
-            pickedLat: selectedLocation.lat,
-            pickedLng: selectedLocation.lng,
-            pickedZoomLevel: currentZoomLevel.current,
-        });
-    }, [navigation, selectedLocation]);
-
     useLayoutEffect(() => {
-        if (route.params && !route.params.showHeaderButton) {
-            return;
-        }
-        navigation.setOptions({
-            headerRight: ({ tintColor }) => (
-                <>
-                    <IconButton
-                        icon="save"
-                        size={28}
-                        color={tintColor}
-                        onPress={savedPickedLocationHandler}
-                    />
-                    <IconButton
-                        icon="location"
-                        size={28}
-                        color={tintColor}
-                        onPress={getLocationHandler}
-                    />
-                </>
-            ),
-        });
-    }, [navigation, savedPickedLocationHandler]);
+        navigation.setOptions(
+            {
+                headerRight: ({ tintColor }) => (
+                    <>
+                        <IconButton
+                            icon="list"
+                            size={28}
+                            color={tintColor}
+                            onPress={() => navigation.navigate('AllPlaces')}
+                        />
+                        <IconButton
+                            icon="location"
+                            size={28}
+                            color={tintColor}
+                            onPress={getLocationHandler}
+                        />
+                        <IconButton
+                            icon="reload"
+                            size={28}
+                            color={tintColor}
+                            onPress={moveMapHome.bind(this, region.longitude, region.latitude, region.zoomLevel)}
+                        />
+                        <IconButton
+                            icon="information"
+                            size={28}
+                            color={tintColor}
+                            onPress={() => navigation.navigate('Info')}
+                        />
+                    </>
+                ),
+            });
+    }, [navigation]);
 
 
     return (
@@ -134,7 +113,6 @@ function Map({ navigation, route }) {
                     attributionEnabled={true}
                     attributionPosition={attributionPosition}
                     styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
-                    onPress={selectLocationHandler}
                     onRegionDidChange={handleRegionDidChange}
                     projectionMode="mercator"
                 >
@@ -145,9 +123,6 @@ function Map({ navigation, route }) {
                         }}
                         ref={mapRef}
                     />
-                    {selectedLocation && (
-                        <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />
-                    )}
                     {currentLocation && (
                         <MapLibreGL.PointAnnotation id="2" coordinate={[currentLocation.lng, currentLocation.lat]} />
                     )}
@@ -157,7 +132,7 @@ function Map({ navigation, route }) {
     );
 }
 
-export default Map;
+export default MapHome;
 
 const styles = StyleSheet.create({
     container: {

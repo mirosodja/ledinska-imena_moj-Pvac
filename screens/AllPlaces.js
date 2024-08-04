@@ -8,7 +8,6 @@ import { fetchPlaces } from "../util/database";
 function AllPlaces({ route }) {
     const [loadedPlaces, setLoadedPlaces] = useState([]);
     const isFocused = useIsFocused();
-
     // This useEffect hook is used to check if the screen is focused and if the route has a params property with a place
     useEffect(() => {
         // This async function fetches the places from the database
@@ -17,7 +16,7 @@ function AllPlaces({ route }) {
             setLoadedPlaces(places);
         }
 
-        if (isFocused ) {
+        if (isFocused) {
             loadPlaces();
             // setLoadedPlaces((curPlaces) => [...curPlaces, route.params.place]);
         }

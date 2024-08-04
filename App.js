@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { StatusBar } from 'expo-status-bar';
+import MapHome from './screens/MapHome';
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import PlaceDetails from './screens/PlaceDetails';
@@ -71,10 +72,17 @@ export default function App() {
             }}
           >
             <Stack.Screen
+              name='MapHome'
+              component={MapHome}
+              options={({ navigation }) => ({
+                title: 'Moj Pvác',
+              })}
+            />
+            <Stack.Screen
               name="AllPlaces"
               component={AllPlaces}
               options={({ navigation }) => ({
-                title: `Moj Pvác`,
+                title: 'Seznam mojih Pvácov',
                 headerRight: ({ tintColor }) => (
                   <>
                     <IconButton
@@ -83,12 +91,6 @@ export default function App() {
                       color={tintColor}
                       onPress={() => navigation.navigate('AddPlace')}
                     />
-                    <IconButton
-                      icon="information"
-                      size={28}
-                      color={tintColor}
-                      onPress={() => navigation.navigate('Info')}
-                    />
                   </>
                 ),
               })}
@@ -96,15 +98,9 @@ export default function App() {
             <Stack.Screen
               name="AddPlace"
               component={AddPlace}
-              options={{
+              options={({
                 title: 'Dodaj Pvác',
-              }}
-            />
-            <Stack.Screen name="Map"
-              component={Map}
-              options={{
-                title: 'Pvác na zemljevidu'
-              }}
+              })}
             />
             <Stack.Screen name="PlaceDetails"
               component={PlaceDetails}
@@ -112,9 +108,18 @@ export default function App() {
                 title: 'Podrobnosti o Pvácu'
               }}
             />
+            <Stack.Screen name="Map"
+              component={Map}
+              options={{
+                title: 'Moj Pvác na zemljevidu',
+              }
+              }
+            />
             <Stack.Screen name="Info"
               component={Info}
-              options={{ title: 'Info' }}
+              options={{
+                title: 'Info'
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>
