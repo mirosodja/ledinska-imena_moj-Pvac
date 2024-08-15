@@ -81,10 +81,11 @@
             "allowBackup": false
           },
           "ios": {
-            "deploymentTarget": "13.0"
+            "deploymentTarget": "13.4"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
