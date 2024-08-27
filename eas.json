@@ -21,6 +21,11 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./readme/app_on_eas-with-key/pc-api-7225373821293072294-391-400040101e10.json",
+        "track": "production"
+      }
+    }
   }
 }

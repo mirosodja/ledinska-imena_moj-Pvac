@@ -2,7 +2,7 @@
   "expo": {
     "name": "Moj Pvac",
     "slug": "ledinska-imena",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,15 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "1.2.0",
+      "buildNumber": "1.3.0",
       "supportsTablet": false,
-      "bundleIdentifier": "in.potep.ledinskaimena",
+      "bundleIdentifier": "eu.potep.ledinskaimena",
       "entitlements": {
         "com.apple.developer.networking.wifi-info": true
       }
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -44,7 +44,7 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "com.google.android.gms.permission.AD_ID"
       ],
-      "package": "in.potep.ledinskaimena"
+      "package": "eu.potep.ledinskaimena"
     },
     "web": {
       "favicon": "./assets/favicon.png"

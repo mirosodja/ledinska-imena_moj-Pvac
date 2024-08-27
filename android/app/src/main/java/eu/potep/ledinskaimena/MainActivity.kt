@@ -1,4 +1,4 @@
-package `in`.potep.ledinskaimena
+package eu.potep.ledinskaimena
 
 import android.os.Build
 import android.os.Bundle
