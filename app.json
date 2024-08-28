@@ -20,7 +20,7 @@
     "ios": {
       "buildNumber": "1.3.0",
       "supportsTablet": false,
-      "bundleIdentifier": "eu.potep.ledinskaimena",
+      "bundleIdentifier": "in.potep.ledinskaimena",
       "entitlements": {
         "com.apple.developer.networking.wifi-info": true
       }
@@ -44,7 +44,7 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "com.google.android.gms.permission.AD_ID"
       ],
-      "package": "eu.potep.ledinskaimena"
+      "package": "in.potep.ledinskaimena"
     },
     "web": {
       "favicon": "./assets/favicon.png"
