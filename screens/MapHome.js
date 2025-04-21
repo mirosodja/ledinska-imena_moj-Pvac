@@ -17,17 +17,20 @@ MapLibreGL.setAccessToken(mapboxToken);
 
 function MapHome({ navigation }) {
 
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isOffline, setOfflineStatus] = useState(false);
+    let currentZoomLevel = 8.1;
+
+    const mapRef = useRef(null);
+    const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
+
     const region =
     {
         latitude: 46.355280,
         longitude: 14.188080,
-        zoomLevel: 8.1
+        zoomLevel: currentZoomLevel
     };
-    const [currentLocation, setCurrentLocation] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isOffline, setOfflineStatus] = useState(false);
-    const mapRef = useRef(null);
-    const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -37,10 +40,14 @@ function MapHome({ navigation }) {
         return () => removeNetInfoSubscription();
     }, []);
 
-    const moveMapHome = (longitude, latitude, zoomLevel) => {
+    const moveMap = (longitude, latitude, zoomLevel) => {
         if (mapRef.current) {
-            mapRef.current.flyTo([longitude, latitude], 2000);
-            mapRef.current.zoomTo(zoomLevel);
+            setIsLoading(true);
+            mapRef.current.setCamera({
+                centerCoordinate: [longitude, latitude],
+                zoomLevel: zoomLevel,
+                animationDuration: 2000,
+            });
         }
     }
 
@@ -58,14 +65,18 @@ function MapHome({ navigation }) {
             );
             return;
         }
-        setIsLoading(true);
         const locationGps = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+        let adjustedZoomLevel = currentZoomLevel;
+        if (adjustedZoomLevel < 15) {
+            adjustedZoomLevel = (15 + currentZoomLevel) / 2;
+            currentZoomLevel = adjustedZoomLevel;
+        }
+        moveMap(locationGps.coords.longitude, locationGps.coords.latitude, adjustedZoomLevel);
         setCurrentLocation({ lat: locationGps.coords.latitude, lng: locationGps.coords.longitude });
         setTimeout(() => {
             setCurrentLocation(null);
         }, 3000);
-        mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
-    }, [currentLocation]);
+    }, [currentLocation, currentZoomLevel]);
 
     useLayoutEffect(() => {
         navigation.setOptions(
@@ -88,7 +99,7 @@ function MapHome({ navigation }) {
                             icon="reload"
                             size={28}
                             color={tintColor}
-                            onPress={moveMapHome.bind(this, region.longitude, region.latitude, region.zoomLevel)}
+                            onPress={moveMap.bind(this, region.longitude, region.latitude, region.zoomLevel)}
                         />
                         <IconButton
                             icon="information"
