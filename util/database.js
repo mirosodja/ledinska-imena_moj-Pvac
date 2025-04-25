@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite/legacy';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Place } from '../models/place';
 
 const database = SQLite.openDatabase('places.db', version = '1.0');
@@ -142,4 +142,47 @@ export function deletePlace(id) {
     });
 
     return promise;
+}
+
+
+// region storage
+// This function stores the region in AsyncStorage
+export const storeRegion = async (region) => {
+    try {
+        const jsonValue = JSON.stringify(region);
+        await AsyncStorage.setItem('region', jsonValue);
+    } catch (e) {
+        // saving error
+        console.log(e);
+    }
+};
+
+export const getRegion = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('region');
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+        console.log(e);
+    }
+};
+
+export const initRegion = async () => {
+    const defaultRegion = {
+        latitude: 46.355280,
+        longitude: 14.188080,
+        zoomLevel: 8.1,
+    };
+
+    try {
+        const storedRegion = await getRegion();
+        if (storedRegion) {
+            console.log('Stored region found:', storedRegion);
+        } else {
+            await storeRegion(defaultRegion);
+            console.log('No stored region found, using default region:', defaultRegion);
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }

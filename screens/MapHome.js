@@ -5,10 +5,12 @@ import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
+import { getRegion } from "../util/database";
 
 // set MapLibreGL to mapbox tile server
 //TODO comment this line when you build the app with eas
 import { mapboxToken } from "../mapbox/mapboxtoken";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 //TODO uncomment this line when you build the app with eas
 // import Constants from 'expo-constants';
 // const mapboxToken = Constants.manifest.extra.mapboxToken;
@@ -20,17 +22,22 @@ function MapHome({ navigation }) {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
+    const [region, setRegion] = useState({});
     let currentZoomLevel = 8.1;
 
+    const cameraRef = useRef(null);
     const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
-
-    const region =
-    {
-        latitude: 46.355280,
-        longitude: 14.188080,
-        zoomLevel: currentZoomLevel
-    };
+    useEffect(() => {
+        const fetchRegion = async () => {
+            const regionData = await getRegion();
+            if (regionData) {
+                setRegion(regionData);
+                console.log('Region from database: ', regionData);
+            }
+        };
+        fetchRegion();
+    }, []);
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -41,9 +48,9 @@ function MapHome({ navigation }) {
     }, []);
 
     const moveMap = (longitude, latitude, zoomLevel) => {
-        if (mapRef.current) {
+        if (cameraRef.current) {
             setIsLoading(true);
-            mapRef.current.setCamera({
+            cameraRef.current.setCamera({
                 centerCoordinate: [longitude, latitude],
                 zoomLevel: zoomLevel,
                 animationDuration: 2000,
@@ -51,7 +58,13 @@ function MapHome({ navigation }) {
         }
     }
 
-    const handleRegionDidChange = async (event) => {
+    const handleRegionDidChange = async () => {
+        // console.log('Region changed: ' + JSON.stringify(cameraRef.current));
+        // const zoom = await this._map.getZoomLevel();
+        const visibleBounds = await mapRef.current.getZoom();
+        console.log('Zoom level: ' + visibleBounds);
+        const center = await mapRef.current.getCenter();
+        console.log('Center: ' + JSON.stringify(center));
         setIsLoading(false);
     };
 
@@ -126,13 +139,14 @@ function MapHome({ navigation }) {
                     styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
                     onRegionDidChange={handleRegionDidChange}
                     projectionMode="mercator"
+                    ref={mapRef}
                 >
                     <MapLibreGL.Camera
                         defaultSettings={{
                             centerCoordinate: [region.longitude, region.latitude],
                             zoomLevel: region.zoomLevel,
                         }}
-                        ref={mapRef}
+                        ref={cameraRef}
                     />
                     {currentLocation && (
                         <MapLibreGL.PointAnnotation id="2" coordinate={[currentLocation.lng, currentLocation.lat]} />

@@ -13,7 +13,7 @@ import PlaceDetails from './screens/PlaceDetails';
 import IconButton from './components/UI/IconButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
-import { init } from './util/database';
+import { init, initRegion } from './util/database';
 import Info from './screens/Info';
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +30,7 @@ export default function App() {
       try {
         await SplashScreen.preventAutoHideAsync();
         init();
+        initRegion();
       } catch (e) {
         console.warn(e);
       } finally {
