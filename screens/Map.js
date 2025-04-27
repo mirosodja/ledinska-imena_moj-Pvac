@@ -5,6 +5,7 @@ import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
+import { getRegion, storeRegion } from "../util/database";
 
 // set MapLibreGL to mapbox tile server
 //TODO comment this line when you build the app with eas
@@ -29,16 +30,28 @@ function Map({ navigation, route }) {
     const [isOffline, setOfflineStatus] = useState(false);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
     const currentZoomLevel = useRef(initialLocation ? initialLocation.zoomLevel : 8.1);
+    const [currentRegion, setRegion] = useState({});
     const mapRef = useRef(null);
+    const cameraRef = useRef(null);
 
 
     const region = {
         // TODO: set initial location and zoom to see the whole municipality where are Ledinska imena
 
-        latitude: initialLocation ? initialLocation.lat : 46.355280,
-        longitude: initialLocation ? initialLocation.lng : 14.188080,
-        zoomLevel: initialLocation ? initialLocation.zoomLevel : 8.1,
+        latitude: initialLocation ? initialLocation.lat : currentRegion.latitude,
+        longitude: initialLocation ? initialLocation.lng : currentRegion.longitude,
+        zoomLevel: initialLocation ? initialLocation.zoomLevel : currentRegion.zoomLevel,
     };
+
+    useEffect(() => {
+        const fetchRegion = async () => {
+            const regionData = await getRegion();
+            if (regionData) {
+                setRegion(regionData);
+            }
+        };
+        fetchRegion();
+    }, []);
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -48,9 +61,18 @@ function Map({ navigation, route }) {
         return () => removeNetInfoSubscription();
     }, []);
 
-    const handleRegionDidChange = async (event) => {
+    const handleRegionDidChange = async () => {
         if (mapRef.current) {
-            currentZoomLevel.current = event.properties.zoomLevel;
+            currentZoomLevel.current = await mapRef.current.getZoom();
+            const center = await mapRef.current.getCenter();
+            if (!initialLocation) {
+                const regionForStore = {
+                    latitude: center[1],
+                    longitude: center[0],
+                    zoomLevel: currentZoomLevel.current,
+                };
+                await storeRegion(regionForStore);
+            }
         }
         setIsLoading(false);
     };
@@ -77,8 +99,8 @@ function Map({ navigation, route }) {
         setTimeout(() => {
             setCurrentLocation(null);
         }, 3000);
-        if (mapRef.current) {
-            mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
+        if (cameraRef.current) {
+            cameraRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
         }
     }, [currentLocation]);
 
@@ -137,13 +159,14 @@ function Map({ navigation, route }) {
                     onPress={selectLocationHandler}
                     onRegionDidChange={handleRegionDidChange}
                     projectionMode="mercator"
+                    ref={mapRef}
                 >
                     <MapLibreGL.Camera
                         defaultSettings={{
                             centerCoordinate: [region.longitude, region.latitude],
                             zoomLevel: region.zoomLevel,
                         }}
-                        ref={mapRef}
+                        ref={cameraRef}
                     />
                     {selectedLocation && (
                         <MapLibreGL.PointAnnotation id="1" coordinate={[selectedLocation.lng, selectedLocation.lat]} />

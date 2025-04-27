@@ -5,10 +5,12 @@ import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
+import { getRegion, storeRegion } from "../util/database";
 
 // set MapLibreGL to mapbox tile server
 //TODO comment this line when you build the app with eas
 import { mapboxToken } from "../mapbox/mapboxtoken";
+// Removed unused import of 'get' to fix the compile error
 //TODO uncomment this line when you build the app with eas
 // import Constants from 'expo-constants';
 // const mapboxToken = Constants.manifest.extra.mapboxToken;
@@ -17,17 +19,24 @@ MapLibreGL.setAccessToken(mapboxToken);
 
 function MapHome({ navigation }) {
 
-    const region =
-    {
-        latitude: 46.355280,
-        longitude: 14.188080,
-        zoomLevel: 8.1
-    };
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
+    const [currentRegion, setRegion] = useState({});
+
+    const cameraRef = useRef(null);
     const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
+
+    useEffect(() => {
+        const fetchRegion = async () => {
+            const regionData = await getRegion();
+            if (regionData) {
+                setRegion(regionData);
+            }
+        };
+        fetchRegion();
+    }, []);
 
     useEffect(() => {
         const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -37,14 +46,28 @@ function MapHome({ navigation }) {
         return () => removeNetInfoSubscription();
     }, []);
 
-    const moveMapHome = (longitude, latitude, zoomLevel) => {
-        if (mapRef.current) {
-            mapRef.current.flyTo([longitude, latitude], 2000);
-            mapRef.current.zoomTo(zoomLevel);
+    const moveMap = (longitude, latitude, zoomLevel) => {
+        if (cameraRef.current) {
+            setIsLoading(true);
+            cameraRef.current.setCamera({
+                centerCoordinate: [longitude, latitude],
+                zoomLevel: zoomLevel,
+                animationDuration: 2000,
+            });
         }
     }
 
-    const handleRegionDidChange = async (event) => {
+    const handleRegionDidChange = async () => {
+        if (mapRef.current) {
+            const currentZoom = await mapRef.current.getZoom();
+            const center = await mapRef.current.getCenter();
+            const currentRegion = {
+                latitude: center[1],
+                longitude: center[0],
+                zoomLevel: currentZoom,
+            };
+            await storeRegion(currentRegion);
+        }
         setIsLoading(false);
     };
 
@@ -58,14 +81,17 @@ function MapHome({ navigation }) {
             );
             return;
         }
-        setIsLoading(true);
         const locationGps = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+        let adjustedZoomLevel = await mapRef.current.getZoom();
+        if (adjustedZoomLevel < 15.1) {
+            adjustedZoomLevel = (16 + adjustedZoomLevel) / 2;
+        }
+        moveMap(locationGps.coords.longitude, locationGps.coords.latitude, adjustedZoomLevel);
         setCurrentLocation({ lat: locationGps.coords.latitude, lng: locationGps.coords.longitude });
         setTimeout(() => {
             setCurrentLocation(null);
-        }, 3000);
-        mapRef.current.flyTo([locationGps.coords.longitude, locationGps.coords.latitude], 2000);
-    }, [currentLocation]);
+        }, 3500);
+    }, [currentLocation,]);
 
     useLayoutEffect(() => {
         navigation.setOptions(
@@ -88,7 +114,7 @@ function MapHome({ navigation }) {
                             icon="reload"
                             size={28}
                             color={tintColor}
-                            onPress={moveMapHome.bind(this, region.longitude, region.latitude, region.zoomLevel)}
+                            onPress={moveMap.bind(this, 14.188080, 46.355280, 8.1)}
                         />
                         <IconButton
                             icon="information"
@@ -115,13 +141,14 @@ function MapHome({ navigation }) {
                     styleURL="mapbox://styles/miro-sodja/clfwhbge3009401mztl3f09x4"
                     onRegionDidChange={handleRegionDidChange}
                     projectionMode="mercator"
+                    ref={mapRef}
                 >
                     <MapLibreGL.Camera
                         defaultSettings={{
-                            centerCoordinate: [region.longitude, region.latitude],
-                            zoomLevel: region.zoomLevel,
+                            centerCoordinate: [currentRegion.longitude, currentRegion.latitude],
+                            zoomLevel: currentRegion.zoomLevel,
                         }}
-                        ref={mapRef}
+                        ref={cameraRef}
                     />
                     {currentLocation && (
                         <MapLibreGL.PointAnnotation id="2" coordinate={[currentLocation.lng, currentLocation.lat]} />
