@@ -58,14 +58,16 @@ function MapHome({ navigation }) {
     }
 
     const handleRegionDidChange = async () => {
-        const currentZoom = await mapRef.current.getZoom();
-        const center = await mapRef.current.getCenter();
-        const currentRegion = {
-            latitude: center[1],
-            longitude: center[0],
-            zoomLevel: currentZoom,
-        };
-        await storeRegion(currentRegion);
+        if (mapRef.current) {
+            const currentZoom = await mapRef.current.getZoom();
+            const center = await mapRef.current.getCenter();
+            const currentRegion = {
+                latitude: center[1],
+                longitude: center[0],
+                zoomLevel: currentZoom,
+            };
+            await storeRegion(currentRegion);
+        }
         setIsLoading(false);
     };
 
