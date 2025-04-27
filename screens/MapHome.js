@@ -5,12 +5,12 @@ import MapLibreGL from '@maplibre/maplibre-react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { Colors } from "../constants/colors";
 import IconButton from "../components/UI/IconButton";
-import { getRegion } from "../util/database";
+import { getRegion, storeRegion } from "../util/database";
 
 // set MapLibreGL to mapbox tile server
 //TODO comment this line when you build the app with eas
 import { mapboxToken } from "../mapbox/mapboxtoken";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+// Removed unused import of 'get' to fix the compile error
 //TODO uncomment this line when you build the app with eas
 // import Constants from 'expo-constants';
 // const mapboxToken = Constants.manifest.extra.mapboxToken;
@@ -22,18 +22,17 @@ function MapHome({ navigation }) {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setOfflineStatus] = useState(false);
-    const [region, setRegion] = useState({});
-    let currentZoomLevel = 8.1;
+    const [currentRegion, setRegion] = useState({});
 
     const cameraRef = useRef(null);
     const mapRef = useRef(null);
     const attributionPosition = useMemo(() => ({ top: 8, left: 8 }), []);
+
     useEffect(() => {
         const fetchRegion = async () => {
             const regionData = await getRegion();
             if (regionData) {
                 setRegion(regionData);
-                console.log('Region from database: ', regionData);
             }
         };
         fetchRegion();
@@ -59,12 +58,14 @@ function MapHome({ navigation }) {
     }
 
     const handleRegionDidChange = async () => {
-        // console.log('Region changed: ' + JSON.stringify(cameraRef.current));
-        // const zoom = await this._map.getZoomLevel();
-        const visibleBounds = await mapRef.current.getZoom();
-        console.log('Zoom level: ' + visibleBounds);
+        const currentZoom = await mapRef.current.getZoom();
         const center = await mapRef.current.getCenter();
-        console.log('Center: ' + JSON.stringify(center));
+        const currentRegion = {
+            latitude: center[1],
+            longitude: center[0],
+            zoomLevel: currentZoom,
+        };
+        await storeRegion(currentRegion);
         setIsLoading(false);
     };
 
@@ -79,17 +80,16 @@ function MapHome({ navigation }) {
             return;
         }
         const locationGps = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
-        let adjustedZoomLevel = currentZoomLevel;
-        if (adjustedZoomLevel < 15) {
-            adjustedZoomLevel = (15 + currentZoomLevel) / 2;
-            currentZoomLevel = adjustedZoomLevel;
+        let adjustedZoomLevel = await mapRef.current.getZoom();
+        if (adjustedZoomLevel < 15.1) {
+            adjustedZoomLevel = (16 + adjustedZoomLevel) / 2;
         }
         moveMap(locationGps.coords.longitude, locationGps.coords.latitude, adjustedZoomLevel);
         setCurrentLocation({ lat: locationGps.coords.latitude, lng: locationGps.coords.longitude });
         setTimeout(() => {
             setCurrentLocation(null);
-        }, 3000);
-    }, [currentLocation, currentZoomLevel]);
+        }, 3500);
+    }, [currentLocation,]);
 
     useLayoutEffect(() => {
         navigation.setOptions(
@@ -112,7 +112,7 @@ function MapHome({ navigation }) {
                             icon="reload"
                             size={28}
                             color={tintColor}
-                            onPress={moveMap.bind(this, region.longitude, region.latitude, region.zoomLevel)}
+                            onPress={moveMap.bind(this, 14.188080, 46.355280, 8.1)}
                         />
                         <IconButton
                             icon="information"
@@ -143,8 +143,8 @@ function MapHome({ navigation }) {
                 >
                     <MapLibreGL.Camera
                         defaultSettings={{
-                            centerCoordinate: [region.longitude, region.latitude],
-                            zoomLevel: region.zoomLevel,
+                            centerCoordinate: [currentRegion.longitude, currentRegion.latitude],
+                            zoomLevel: currentRegion.zoomLevel,
                         }}
                         ref={cameraRef}
                     />

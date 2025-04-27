@@ -153,7 +153,7 @@ export const storeRegion = async (region) => {
         await AsyncStorage.setItem('region', jsonValue);
     } catch (e) {
         // saving error
-        console.log(e);
+        console.warn(e);
     }
 };
 
@@ -163,7 +163,7 @@ export const getRegion = async () => {
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         // error reading value
-        console.log(e);
+        console.warn(e);
     }
 };
 
@@ -177,12 +177,10 @@ export const initRegion = async () => {
     try {
         const storedRegion = await getRegion();
         if (storedRegion) {
-            console.log('Stored region found:', storedRegion);
         } else {
             await storeRegion(defaultRegion);
-            console.log('No stored region found, using default region:', defaultRegion);
         }
     } catch (e) {
-        console.log(e);
+        console.warn(e);
     }
 }
