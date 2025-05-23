@@ -48,7 +48,6 @@ function MapHome({ navigation }) {
 
     const moveMap = (longitude, latitude, zoomLevel) => {
         if (cameraRef.current) {
-            setIsLoading(true);
             cameraRef.current.setCamera({
                 centerCoordinate: [longitude, latitude],
                 zoomLevel: zoomLevel,
@@ -81,6 +80,7 @@ function MapHome({ navigation }) {
             );
             return;
         }
+        setIsLoading(true);
         const locationGps = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
         let adjustedZoomLevel = await mapRef.current.getZoom();
         if (adjustedZoomLevel < 15.1) {
