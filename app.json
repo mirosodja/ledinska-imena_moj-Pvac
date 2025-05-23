@@ -2,7 +2,7 @@
   "expo": {
     "name": "Moj Pvac",
     "slug": "ledinska-imena",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,7 +18,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "1.4.0",
+      "buildNumber": "1.4.1",
       "supportsTablet": false,
       "bundleIdentifier": "in.potep.ledinskaimena",
       "entitlements": {
@@ -26,7 +26,7 @@
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
